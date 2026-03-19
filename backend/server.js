@@ -1,4 +1,3 @@
-// ← Entry point. Creates the Express app.
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -14,28 +13,28 @@ const goalsRoutes = require('./routes/goals');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 
-// Initialize database
+// Serve frontend folder — fixes the file:// CORS issue
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 initDB();
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/api/timer', timerRoutes);
 app.use('/api/mood', moodRoutes);
 app.use('/api/goals', goalsRoutes);
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: '🌸 StudyNest server is running!' });
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`🌸 StudyNest backend running on http://localhost:${PORT}`);
+  console.log(`🌸 StudyNest running at http://localhost:${PORT}`);
 });

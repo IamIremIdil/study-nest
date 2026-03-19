@@ -32,3 +32,51 @@ desktop.ini
 # ── Build output (if you add a build step later) ──
 dist/
 build/
+
+# ── Dependencies ──
+node_modules/
+
+# ── Environment & Secrets ──
+.env
+*.env.local
+
+# ── Database files ──
+*.db
+*.db.bin
+*.db.json.bin
+*.sqlite
+
+# ── Logs ──
+*.log
+npm-debug.log*
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db
+
+# ── VSCode ──
+.vscode/
+
+# ── PyCharm (old editor, clean up any leftovers) ──
+.idea/
+*.iml
+```
+
+---
+
+**About `.env` and secrets** — here's the mental model:
+```
+.env.example   ← SAFE to commit ✅  (has fake placeholder values)
+.env           ← NEVER commit ❌    (has your real secret values)
+```
+
+So your `.env.example` looks like:
+```
+JWT_SECRET=change-this-to-something-long-and-random
+PORT=3001
+```
+
+And your actual `.env` (which you create yourself, never share) looks like:
+```
+JWT_SECRET=k9$mN2#pL8vQ...  ← a real secret you made up
+PORT=3001
