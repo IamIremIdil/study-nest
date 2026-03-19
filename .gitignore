@@ -1,0 +1,34 @@
+# ── Dependencies ──
+node_modules/
+
+# ── Environment & Secrets ──
+.env
+*.env.local
+*.env.*.local
+
+# ── Database files ──
+*.db
+*.db.bin
+*.db.json.bin
+*.sqlite
+*.sqlite3
+
+# ── Logs ──
+logs/
+*.log
+npm-debug.log*
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor stuff ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Build output (if you add a build step later) ──
+dist/
+build/
