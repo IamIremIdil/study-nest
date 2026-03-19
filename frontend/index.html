@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyNest 🌿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #faf6f0;
+      --warm-white: #fffdf9;
+      --blush: #f0d9d0;
+      --rose: #c9897a;
+      --rose-deep: #a06558;
+      --sage: #8fa88a;
+      --sage-light: #c8d9c4;
+      --sage-pale: #eaf0e8;
+      --amber: #d4a96a;
+      --amber-light: #f5e6cf;
+      --text: #4a3728;
+      --text-light: #7a6258;
+      --text-muted: #a89488;
+      --border: #e8ddd5;
+      --shadow: rgba(74, 55, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background-color: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(200, 217, 196, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(240, 217, 208, 0.3) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9897a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* ── Auth Screen ── */
+    #auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .auth-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px var(--shadow), 0 2px 8px rgba(201, 137, 122, 0.1);
+      animation: fadeUp 0.6s ease;
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-logo .leaf { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+
+    .auth-logo h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--rose-deep);
+      font-weight: 400;
+    }
+
+    .auth-logo p { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem; font-style: italic; }
+
+    .tab-row {
+      display: flex;
+      gap: 0;
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 1.75rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.6rem;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--warm-white);
+      color: var(--rose-deep);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: var(--cream);
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(201, 137, 122, 0.12);
+      background: var(--warm-white);
+    }
+
+    textarea { resize: vertical; min-height: 80px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      border: none;
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: var(--rose);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover { background: var(--rose-deep); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201, 137, 122, 0.35); }
+
+    .btn-sage { background: var(--sage); color: white; }
+    .btn-sage:hover { background: #7a9475; transform: translateY(-1px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--rose-deep);
+      border: 1.5px solid var(--rose);
+    }
+    .btn-outline:hover { background: var(--blush); }
+
+    .btn-ghost {
+      background: var(--cream);
+      color: var(--text-light);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--border); }
+
+    .btn-sm { padding: 0.5rem 0.9rem; font-size: 0.85rem; border-radius: 9px; }
+
+    .error-msg {
+      background: #fdeaea;
+      color: #c0392b;
+      border: 1px solid #f5c6c6;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+
+    .success-msg {
+      background: #eafaf1;
+      color: #27ae60;
+      border: 1px solid #c3e6cb;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── App Layout ── */
+    #app { display: none; min-height: 100vh; }
+
+    .app-header {
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--rose-deep);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-badge {
+      background: var(--sage-pale);
+      color: var(--sage);
+      border: 1px solid var(--sage-light);
+      border-radius: 20px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--cream);
+      padding: 0.4rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      font-family: 'Lora', serif;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active {
+      background: var(--warm-white);
+      color: var(--rose-deep);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .nav-tab:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.5); }
+
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 4px 20px var(--shadow);
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--rose-deep);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ── Dashboard ── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 12px var(--shadow);
+      animation: fadeUp 0.4s ease;
+    }
+
+    .stat-card .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .stat-card .stat-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--rose-deep);
+      font-weight: 600;
+    }
+    .stat-card .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--blush) 0%, var(--amber-light) 100%);
+      border: 1px solid rgba(201, 137, 122, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-banner::before {
+      content: '🌿';
+      position: absolute;
+      right: 1.5rem;
+      top: 1rem;
+      font-size: 3rem;
+      opacity: 0.3;
+    }
+
+    .welcome-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--rose-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    .welcome-banner p { color: var(--text-light); font-style: italic; }
+
+    /* ── Pomodoro ── */
+    .timer-display {
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .timer-ring {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 6px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      background: var(--cream);
+      position: relative;
+      box-shadow: 0 0 0 12px var(--warm-white), 0 0 0 13px var(--border);
+    }
+
+    .timer-ring.running {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 12px var(--warm-white), 0 0 0 13px var(--border), 0 0 30px rgba(201, 137, 122, 0.2);
+      animation: pulse-ring 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 12px var(--warm-white), 0 0 0 13px var(--border), 0 0 30px rgba(201, 137, 122, 0.15); }
+      50% { box-shadow: 0 0 0 12px var(--warm-white), 0 0 0 13px var(--border), 0 0 40px rgba(201, 137, 122, 0.3); }
+    }
+
+    .timer-time {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .timer-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+    .timer-controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .duration-pills {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--cream);
+      font-family: 'Lora', serif;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill.active, .pill:hover {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: white;
+    }
+
+    /* ── Notes ── */
+    .note-card {
+      background: linear-gradient(135deg, var(--amber-light) 0%, var(--blush) 100%);
+      border: 1px solid rgba(201, 137, 122, 0.2);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .note-card .note-emoji { font-size: 1.5rem; float: right; }
+    .note-card .note-text { color: var(--text); font-style: italic; line-height: 1.6; margin-bottom: 0.5rem; }
+    .note-card .note-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ── Mood ── */
+    .mood-scale {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .mood-btn {
+      flex: 1;
+      min-width: 60px;
+      padding: 0.75rem 0.5rem;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: var(--cream);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .mood-btn:hover, .mood-btn.selected {
+      border-color: var(--rose);
+      background: var(--blush);
+      transform: scale(1.05);
+    }
+
+    .mood-btn span { display: block; font-size: 0.75rem; font-family: 'Lora', serif; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* ── Goals ── */
+    .goal-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .goal-item:hover { border-color: var(--sage-light); box-shadow: 0 2px 12px var(--shadow); }
+
+    .goal-item.done { opacity: 0.6; }
+    .goal-item.done .goal-title { text-decoration: line-through; }
+
+    .goal-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+    .goal-body { flex: 1; min-width: 0; }
+    .goal-title { font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
+    .goal-desc { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+
+    .countdown-badge {
+      background: var(--sage-pale);
+      color: var(--sage);
+      border: 1px solid var(--sage-light);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .countdown-badge.urgent {
+      background: #fff3cd;
+      color: #856404;
+      border-color: #ffc107;
+    }
+
+    .countdown-badge.soon {
+      background: #fde8e4;
+      color: var(--rose-deep);
+      border-color: var(--rose);
+    }
+
+    /* ── Misc ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+    .inline-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: end;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 640px) {
+      .app-header { flex-direction: column; gap: 1rem; padding: 1rem; }
+      .nav-tabs { overflow-x: auto; width: 100%; }
+      .form-row { grid-template-columns: 1fr; }
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--warm-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 8px 32px var(--shadow);
+      font-size: 0.9rem;
+      color: var(--text);
+      z-index: 999;
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .mood-history-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mood-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .partner-select-note {
+      background: var(--sage-pale);
+      border: 1px solid var(--sage-light);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      color: var(--sage);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════ AUTH SCREEN ════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="leaf">🌿</span>
+      <h1>StudyNest</h1>
+      <p>your cozy corner for exam season</p>
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="showAuthTab('login')">Sign In</button>
+      <button class="tab-btn" onclick="showAuthTab('register')">Create Account</button>
+    </div>
+
+    <div id="auth-msg"></div>
+
+    <!-- Login -->
+    <div id="login-form">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="e.g. botanist_bf" autocomplete="username" />
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
+      <button class="btn btn-primary" onclick="handleLogin()">🌿 Sign In</button>
+    </div>
+
+    <!-- Register -->
+    <div id="register-form" class="hidden">
+      <label>Username</label>
+      <input type="text" id="reg-user" placeholder="e.g. botanist_bf" autocomplete="username" />
+      <label>Password</label>
+      <input type="password" id="reg-pass" placeholder="at least 6 characters" autocomplete="new-password" />
+      <label>I am the…</label>
+      <select id="reg-role">
+        <option value="student">📚 Student (studying for exams)</option>
+        <option value="supporter">🌸 Supporter (sending love notes)</option>
+      </select>
+      <button class="btn btn-primary" onclick="handleRegister()">🌸 Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ MAIN APP ════════════════════ -->
+<div id="app">
+  <header class="app-header">
+    <div class="header-logo">🌿 StudyNest</div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="showTab('dashboard')">🏡 Home</button>
+      <button class="nav-tab" onclick="showTab('timer')">🍅 Timer</button>
+      <button class="nav-tab" onclick="showTab('goals')">🎯 Goals</button>
+      <button class="nav-tab" onclick="showTab('notes')">💌 Notes</button>
+      <button class="nav-tab" onclick="showTab('mood')">🌸 Mood</button>
+    </nav>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <div class="user-badge">🌿 <span id="header-username"></span></div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard">
+      <div class="welcome-banner">
+        <h2>Good to see you, <span id="welcome-name"></span> 🌿</h2>
+        <p id="welcome-sub">You've got this — one step at a time.</p>
+      </div>
+      <div class="dashboard-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🍅</div>
+          <div class="stat-val" id="stat-sessions">—</div>
+          <div class="stat-label">pomodoros done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-val" id="stat-hours">—</div>
+          <div class="stat-label">hours studied</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-val" id="stat-goals">—</div>
+          <div class="stat-label">goals set</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💌</div>
+          <div class="stat-val" id="stat-notes">—</div>
+          <div class="stat-label">love notes</div>
+        </div>
+      </div>
+      <!-- Latest note preview -->
+      <div class="card" id="latest-note-card" style="display:none">
+        <div class="card-title">💌 Latest note for you</div>
+        <div id="latest-note-content"></div>
+      </div>
+      <!-- Next exam -->
+      <div class="card" id="next-goal-card" style="display:none">
+        <div class="card-title">🎯 Coming up</div>
+        <div id="next-goal-content"></div>
+      </div>
+    </div>
+
+    <!-- TIMER -->
+    <div id="tab-timer" class="hidden">
+      <div class="card">
+        <div class="card-title">🍅 Pomodoro Timer</div>
+        <div style="margin-bottom:1rem;">
+          <label style="margin-bottom:0.5rem;">Subject (optional)</label>
+          <input type="text" id="timer-subject" placeholder="e.g. Biology, Organic Chemistry…" />
+        </div>
+        <div class="duration-pills">
+          <button class="pill active" onclick="setDuration(25, this)">25 min</button>
+          <button class="pill" onclick="setDuration(45, this)">45 min</button>
+          <button class="pill" onclick="setDuration(60, this)">60 min</button>
+        </div>
+        <div class="timer-display">
+          <div class="timer-ring" id="timer-ring">
+            <div>
+              <div class="timer-time" id="timer-display">25:00</div>
+              <div class="timer-label" id="timer-status-text">ready</div>
+            </div>
+          </div>
+          <div class="timer-controls">
+            <button class="btn btn-primary" id="timer-start-btn" onclick="startTimer()">▶ Start</button>
+            <button class="btn btn-ghost" onclick="resetTimer()">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Recent Sessions</div>
+        </div>
+        <div id="sessions-list">
+          <div class="empty-state"><div class="empty-icon">🌿</div>No sessions yet. Start studying!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOALS -->
+    <div id="tab-goals" class="hidden">
+      <div class="card">
+        <div class="card-title">🎯 Add an Exam / Goal</div>
+        <label>Title</label>
+        <input type="text" id="goal-title" placeholder="e.g. Vet Med Entrance Exam" />
+        <label>Description (optional)</label>
+        <input type="text" id="goal-desc" placeholder="e.g. Need 85%+ to qualify" />
+        <label>Target Date</label>
+        <input type="date" id="goal-date" />
+        <button class="btn btn-primary" onclick="addGoal()">🎯 Add Goal</button>
+      </div>
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Your Goals</div>
+        </div>
+        <div id="goals-list">
+          <div class="empty-state"><div class="empty-icon">🌱</div>Add your first goal above!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div id="tab-notes" class="hidden">
+      <div class="card" id="send-note-card">
+        <div class="card-title">💌 Send a Love Note</div>
+        <div class="partner-select-note" id="note-tip">Loading users…</div>
+        <label>Send to</label>
+        <select id="note-to"></select>
+        <label>Your message</label>
+        <textarea id="note-msg" placeholder="Write something sweet… 🌸"></textarea>
+        <label>Pick an emoji</label>
+        <div class="mood-scale" style="margin-bottom:1rem;">
+          <button class="mood-btn selected" onclick="selectEmoji('🌸', this)">🌸</button>
+          <button class="mood-btn" onclick="selectEmoji('🌿', this)">🌿</button>
+          <button class="mood-btn" onclick="selectEmoji('☕', this)">☕</button>
+          <button class="mood-btn" onclick="selectEmoji('✨', this)">✨</button>
+          <button class="mood-btn" onclick="selectEmoji('🐾', this)">🐾</button>
+        </div>
+        <button class="btn btn-primary" onclick="sendNote()">💌 Send Note</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📬 Your Inbox</div>
+        <div id="inbox-list">
+          <div class="empty-state"><div class="empty-icon">🌸</div>No notes yet…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOOD -->
+    <div id="tab-mood" class="hidden">
+      <div class="card">
+        <div class="card-title">🌸 How are you feeling?</div>
+        <label style="margin-bottom:0.75rem;font-size:0.95rem;">Mood</label>
+        <div class="mood-scale" id="mood-scale">
+          <button class="mood-btn" onclick="selectMood(1, this)">😞<span>rough</span></button>
+          <button class="mood-btn" onclick="selectMood(2, this)">😕<span>meh</span></button>
+          <button class="mood-btn" onclick="selectMood(3, this)">😊<span>okay</span></button>
+          <button class="mood-btn" onclick="selectMood(4, this)">😄<span>good</span></button>
+          <button class="mood-btn" onclick="selectMood(5, this)">🤩<span>great</span></button>
+        </div>
+        <label style="margin-bottom:0.75rem;font-size:0.95rem;">Energy Level</label>
+        <div class="mood-scale" id="energy-scale">
+          <button class="mood-btn" onclick="selectEnergy(1, this)">🪫<span>drained</span></button>
+          <button class="mood-btn" onclick="selectEnergy(2, this)">😴<span>tired</span></button>
+          <button class="mood-btn" onclick="selectEnergy(3, this)">🙂<span>okay</span></button>
+          <button class="mood-btn" onclick="selectEnergy(4, this)">⚡<span>alert</span></button>
+          <button class="mood-btn" onclick="selectEnergy(5, this)">🚀<span>pumped</span></button>
+        </div>
+        <label>Any notes? (optional)</label>
+        <input type="text" id="mood-note" placeholder="e.g. Studied 3 hours, feeling good!" />
+        <button class="btn btn-primary" onclick="logMood()">🌸 Log Check-In</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📊 Mood History</div>
+        <div id="mood-history">
+          <div class="empty-state"><div class="empty-icon">🌿</div>No entries yet</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Config ──
+const API = 'http://localhost:3001/api';
+let token = localStorage.getItem('sn_token');
+let currentUser = JSON.parse(localStorage.getItem('sn_user') || 'null');
+
+// ── State ──
+let selectedMood = null;
+let selectedEnergy = null;
+let selectedEmoji = '🌸';
+let timerDuration = 25;
+let timerInterval = null;
+let timerSeconds = 25 * 60;
+let timerRunning = false;
+let currentSessionId = null;
+
+// ── Boot ──
+window.addEventListener('DOMContentLoaded', () => {
+  if (token && currentUser) {
+    showApp();
+  }
+});
+
+// ── Auth UI ──
+function showAuthTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+  });
+  document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
+  document.getElementById('auth-msg').innerHTML = '';
+}
+
+function showAuthMsg(msg, type='error') {
+  document.getElementById('auth-msg').innerHTML = `<div class="${type}-msg">${msg}</div>`;
+}
+
+async function handleLogin() {
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value;
+  if (!username || !password) return showAuthMsg('Please fill in both fields.');
+
+  const data = await api('POST', '/auth/login', { username, password }, false);
+  if (data.error) return showAuthMsg(data.error);
+
+  token = data.token;
+  currentUser = data.user;
+  localStorage.setItem('sn_token', token);
+  localStorage.setItem('sn_user', JSON.stringify(currentUser));
+  showApp();
+}
+
+async function handleRegister() {
+  const username = document.getElementById('reg-user').value.trim();
+  const password = document.getElementById('reg-pass').value;
+  const role = document.getElementById('reg-role').value;
+  if (!username || !password) return showAuthMsg('Please fill in all fields.');
+
+  const data = await api('POST', '/auth/register', { username, password, role }, false);
+  if (data.error) return showAuthMsg(data.error);
+
+  token = data.token;
+  currentUser = data.user;
+  localStorage.setItem('sn_token', token);
+  localStorage.setItem('sn_user', JSON.stringify(currentUser));
+  showApp();
+}
+
+function logout() {
+  localStorage.removeItem('sn_token');
+  localStorage.removeItem('sn_user');
+  token = null; currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+// ── App Init ──
+function showApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('header-username').textContent = currentUser.username;
+  document.getElementById('welcome-name').textContent = currentUser.username;
+
+  if (currentUser.role === 'supporter') {
+    document.getElementById('welcome-sub').textContent = 'Keep sending those sweet notes 🌸';
+  }
+
+  loadDashboard();
+  loadPartners();
+}
+
+// ── Navigation ──
+function showTab(tab) {
+  document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.remove('hidden');
+  event.target.classList.add('active');
+
+  if (tab === 'notes') loadInbox();
+  if (tab === 'goals') loadGoals();
+  if (tab === 'mood') loadMoodHistory();
+  if (tab === 'timer') loadSessions();
+}
+
+// ── API Helper ──
+async function api(method, path, body, auth=true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (auth && token) headers['Authorization'] = `Bearer ${token}`;
+  try {
+    const res = await fetch(API + path, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined
+    });
+    return await res.json();
+  } catch (e) {
+    return { error: 'Could not connect to server. Make sure the backend is running on port 3001.' };
+  }
+}
+
+// ── Toast ──
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+// ── Dashboard ──
+async function loadDashboard() {
+  const [stats, goals, inbox] = await Promise.all([
+    api('GET', '/timer/stats'),
+    api('GET', '/goals'),
+    api('GET', '/notes/inbox')
+  ]);
+
+  document.getElementById('stat-sessions').textContent = stats.overall?.completed_sessions ?? 0;
+  document.getElementById('stat-hours').textContent = stats.overall?.total_hours ?? 0;
+  document.getElementById('stat-goals').textContent = goals.goals?.filter(g => !g.completed).length ?? 0;
+  document.getElementById('stat-notes').textContent = inbox.notes?.length ?? 0;
+
+  // Latest note
+  if (inbox.notes?.length > 0) {
+    const n = inbox.notes[0];
+    document.getElementById('latest-note-card').style.display = 'block';
+    document.getElementById('latest-note-content').innerHTML = `
+      <div class="note-card">
+        <span class="note-emoji">${n.emoji}</span>
+        <div class="note-text">"${n.message}"</div>
+        <div class="note-meta">from ${n.from_username} · ${timeAgo(n.created_at)}</div>
+      </div>`;
+  }
+
+  // Next goal
+  const upcoming = goals.goals?.filter(g => !g.completed && g.days_remaining !== null && g.days_remaining >= 0);
+  if (upcoming?.length > 0) {
+    const g = upcoming[0];
+    const urgency = g.days_remaining <= 3 ? 'soon' : g.days_remaining <= 7 ? 'urgent' : '';
+    document.getElementById('next-goal-card').style.display = 'block';
+    document.getElementById('next-goal-content').innerHTML = `
+      <div class="goal-item">
+        <div class="goal-icon">🎯</div>
+        <div class="goal-body">
+          <div class="goal-title">${g.title}</div>
+          <div class="goal-desc">${g.description || ''}</div>
+        </div>
+        <div class="countdown-badge ${urgency}">${g.days_remaining === 0 ? '📅 today' : `${g.days_remaining}d left`}</div>
+      </div>`;
+  }
+}
+
+// ── Timer ──
+function setDuration(min, el) {
+  if (timerRunning) return;
+  timerDuration = min;
+  timerSeconds = min * 60;
+  updateTimerDisplay();
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+  const s = (timerSeconds % 60).toString().padStart(2, '0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+}
+
+async function startTimer() {
+  if (timerRunning) {
+    // Pause
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-start-btn').textContent = '▶ Resume';
+    document.getElementById('timer-ring').classList.remove('running');
+    document.getElementById('timer-status-text').textContent = 'paused';
+    return;
+  }
+
+  // Start new session
+  if (!currentSessionId) {
+    const subject = document.getElementById('timer-subject').value.trim();
+    const data = await api('POST', '/timer/start', { duration_minutes: timerDuration, subject });
+    if (data.error) return toast('❌ ' + data.error);
+    currentSessionId = data.session?.id;
+  }
+
+  timerRunning = true;
+  document.getElementById('timer-start-btn').textContent = '⏸ Pause';
+  document.getElementById('timer-ring').classList.add('running');
+  document.getElementById('timer-status-text').textContent = 'focus time ✨';
+
+  timerInterval = setInterval(async () => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timer-ring').classList.remove('running');
+      document.getElementById('timer-status-text').textContent = 'done! 🎉';
+      document.getElementById('timer-start-btn').textContent = '▶ Start';
+      if (currentSessionId) {
+        await api('PATCH', `/timer/${currentSessionId}/complete`, {});
+        toast('🎉 Great work! Session complete!');
+        currentSessionId = null;
+        loadSessions();
+        loadDashboard();
+      }
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  currentSessionId = null;
+  timerSeconds = timerDuration * 60;
+  updateTimerDisplay();
+  document.getElementById('timer-ring').classList.remove('running');
+  document.getElementById('timer-start-btn').textContent = '▶ Start';
+  document.getElementById('timer-status-text').textContent = 'ready';
+}
+
+async function loadSessions() {
+  const data = await api('GET', '/timer/sessions');
+  const list = document.getElementById('sessions-list');
+  if (!data.sessions?.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div>No sessions yet. Start studying!</div>';
+    return;
+  }
+  list.innerHTML = data.sessions.slice(0, 8).map(s => `
+    <div class="goal-item">
+      <div class="goal-icon">${s.completed ? '✅' : '⏱️'}</div>
+      <div class="goal-body">
+        <div class="goal-title">${s.subject || 'Study session'}</div>
+        <div class="goal-desc">${s.duration_minutes} minutes · ${timeAgo(s.started_at)}</div>
+      </div>
+      <div class="countdown-badge">${s.completed ? 'done' : 'incomplete'}</div>
+    </div>`).join('');
+}
+
+// ── Goals ──
+async function loadGoals() {
+  const data = await api('GET', '/goals');
+  const list = document.getElementById('goals-list');
+  if (!data.goals?.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🌱</div>Add your first goal!</div>';
+    return;
+  }
+  list.innerHTML = data.goals.map(g => {
+    const urgency = g.days_remaining !== null && g.days_remaining <= 3 ? 'soon' :
+                    g.days_remaining !== null && g.days_remaining <= 7 ? 'urgent' : '';
+    const countdownText = g.days_remaining === null ? '' :
+      g.days_remaining < 0 ? 'passed' :
+      g.days_remaining === 0 ? '📅 today' : `${g.days_remaining}d left`;
+
+    return `<div class="goal-item ${g.completed ? 'done' : ''}">
+      <div class="goal-icon">${g.completed ? '✅' : '🎯'}</div>
+      <div class="goal-body">
+        <div class="goal-title">${g.title}</div>
+        <div class="goal-desc">${g.description || ''}</div>
+      </div>
+      ${countdownText ? `<div class="countdown-badge ${urgency}">${countdownText}</div>` : ''}
+      ${!g.completed ? `<button class="btn btn-sage btn-sm" onclick="completeGoal(${g.id})">✓</button>` : ''}
+      <button class="btn btn-ghost btn-sm" onclick="deleteGoal(${g.id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+async function addGoal() {
+  const title = document.getElementById('goal-title').value.trim();
+  const description = document.getElementById('goal-desc').value.trim();
+  const target_date = document.getElementById('goal-date').value;
+  if (!title) return toast('❌ Please enter a goal title.');
+
+  const data = await api('POST', '/goals', { title, description, target_date });
+  if (data.error) return toast('❌ ' + data.error);
+  toast(data.message);
+  document.getElementById('goal-title').value = '';
+  document.getElementById('goal-desc').value = '';
+  document.getElementById('goal-date').value = '';
+  loadGoals();
+  loadDashboard();
+}
+
+async function completeGoal(id) {
+  const data = await api('PATCH', `/goals/${id}/complete`, {});
+  toast(data.message || '🎉 Done!');
+  loadGoals();
+  loadDashboard();
+}
+
+async function deleteGoal(id) {
+  await api('DELETE', `/goals/${id}`, null);
+  loadGoals();
+  loadDashboard();
+}
+
+// ── Notes ──
+async function loadPartners() {
+  const data = await api('GET', '/auth/users');
+  const sel = document.getElementById('note-to');
+  const tip = document.getElementById('note-tip');
+  sel.innerHTML = '';
+  if (!data.users?.length) {
+    tip.textContent = 'No other users yet. Have your partner create an account so you can send notes! 🌸';
+    return;
+  }
+  tip.textContent = `Sending notes to your partner — so sweet! 🌸`;
+  data.users.forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = u.id;
+    opt.textContent = `${u.role === 'student' ? '📚' : '🌸'} ${u.username}`;
+    sel.appendChild(opt);
+  });
+}
+
+function selectEmoji(emoji, el) {
+  selectedEmoji = emoji;
+  document.querySelectorAll('#tab-notes .mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+async function sendNote() {
+  const to_user_id = document.getElementById('note-to').value;
+  const message = document.getElementById('note-msg').value.trim();
+  if (!to_user_id) return toast('❌ No partner to send to yet!');
+  if (!message) return toast('❌ Write a message first!');
+
+  const data = await api('POST', '/notes', { to_user_id, message, emoji: selectedEmoji });
+  if (data.error) return toast('❌ ' + data.error);
+  toast(data.message);
+  document.getElementById('note-msg').value = '';
+  loadDashboard();
+}
+
+async function loadInbox() {
+  const data = await api('GET', '/notes/inbox');
+  const list = document.getElementById('inbox-list');
+  if (!data.notes?.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🌸</div>No notes yet… waiting for some love 💌</div>';
+    return;
+  }
+  list.innerHTML = data.notes.map(n => `
+    <div class="note-card">
+      <span class="note-emoji">${n.emoji}</span>
+      <div class="note-text">"${n.message}"</div>
+      <div class="note-meta">from ${n.from_username} · ${timeAgo(n.created_at)}</div>
+    </div>`).join('');
+}
+
+// ── Mood ──
+function selectMood(val, el) {
+  selectedMood = val;
+  document.querySelectorAll('#mood-scale .mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function selectEnergy(val, el) {
+  selectedEnergy = val;
+  document.querySelectorAll('#energy-scale .mood-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+async function logMood() {
+  if (!selectedMood || !selectedEnergy) return toast('❌ Please select both mood and energy!');
+  const note = document.getElementById('mood-note').value.trim();
+
+  const data = await api('POST', '/mood', { mood: selectedMood, energy: selectedEnergy, note });
+  if (data.error) return toast('❌ ' + data.error);
+  toast(data.message);
+
+  selectedMood = null; selectedEnergy = null;
+  document.getElementById('mood-note').value = '';
+  document.querySelectorAll('#mood-scale .mood-btn, #energy-scale .mood-btn').forEach(b => b.classList.remove('selected'));
+  loadMoodHistory();
+}
+
+async function loadMoodHistory() {
+  const data = await api('GET', '/mood/history');
+  const list = document.getElementById('mood-history');
+  if (!data.entries?.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div>No check-ins yet</div>';
+    return;
+  }
+  const moodEmojis = ['','😞','😕','😊','😄','🤩'];
+  const energyEmojis = ['','🪫','😴','🙂','⚡','🚀'];
+  const moodColors = ['','#c0392b','#e67e22','#f1c40f','#2ecc71','#27ae60'];
+
+  list.innerHTML = data.entries.slice(0, 10).map(e => `
+    <div class="mood-history-row">
+      <div class="mood-dot" style="background:${moodColors[e.mood]}"></div>
+      <div style="flex:1">
+        <span>${moodEmojis[e.mood]} mood ${e.mood}/5</span>
+        <span style="margin:0 0.5rem;color:var(--text-muted)">·</span>
+        <span>${energyEmojis[e.energy]} energy ${e.energy}/5</span>
+        ${e.note ? `<div style="font-size:0.82rem;color:var(--text-muted);font-style:italic;margin-top:0.2rem">${e.note}</div>` : ''}
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-muted)">${timeAgo(e.created_at)}</div>
+    </div>`).join('');
+}
+
+// ── Utils ──
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  const now = new Date();
+  const then = new Date(dateStr);
+  const diff = (now - then) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+</script>
+</body>
+</html>
