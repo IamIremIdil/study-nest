@@ -31,7 +31,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: '🌸 StudyNest server is running!' });
 });
 
-app.get('*', (req, res) => {
+// to this
+app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
