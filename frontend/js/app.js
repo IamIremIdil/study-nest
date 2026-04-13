@@ -467,3 +467,25 @@ function timeAgo(dateStr) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
+
+
+
+
+// Video fallback handler
+const video = document.querySelector('.video-background');
+
+if (video) {
+  // If video fails to load
+  video.addEventListener('error', function() {
+    console.log('Video failed to load, using CSS background');
+    this.style.display = 'none';
+    document.querySelector('.video-overlay')?.remove();
+  });
+  
+  // Check for slow connection / data saver
+  if (navigator.connection && navigator.connection.saveData) {
+    video.style.display = 'none';
+    document.querySelector('.video-overlay')?.remove();
+  }
+}
+

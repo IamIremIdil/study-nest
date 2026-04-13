@@ -22,6 +22,7 @@
 
 /* ── Base ── */
 body {
+  
   font-family: 'Lora', Georgia, serif;
   background-color: var(--cream);
   color: var(--text);
@@ -32,34 +33,6 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed; */
-}
-
-
-
-/* Video Background */
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-/* Soft overlay to maintain readability */
-.video-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    rgba(250, 246, 240, 0.5),
-    rgba(250, 246, 240, 0.6)
-  );
-  z-index: -1;
-  pointer-events: none;
 }
 
 
@@ -211,7 +184,7 @@ textarea { resize: vertical; min-height: 80px; }
 #app { display: none; min-height: 100vh; }
 
 .app-header {
-  background: rgba(255, 253, 249, 0.82);
+  background: rgba(255, 253, 249, 0.7); /* slightly translucent so bg peeks through */
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 20px rgba(74, 55, 40, 0.08);
   border-bottom: 1px solid var(--border);
@@ -297,7 +270,7 @@ textarea { resize: vertical; min-height: 80px; }
 
 /* ── Cards ── */
 .card {
-  background: rgba(255, 253, 249, 0.88); /* slightly translucent so bg peeks through */
+  background: rgba(255, 253, 249, 0.75); /* slightly translucent so bg peeks through */
   backdrop-filter: blur(6px);
   box-shadow: 0 4px 24px rgba(74, 55, 40, 0.1), 0 1px 4px rgba(201, 137, 122, 0.08);
   border: 1px solid var(--border);
@@ -751,3 +724,57 @@ textarea { resize: vertical; min-height: 80px; }
   padding: 0.1rem 0.55rem;
   font-family: 'Lora', serif;
 }
+
+
+
+
+/* ── Video Background (Add at top of CSS) ── */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Soft overlay for readability */
+.video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(250, 246, 240, 0.4),
+    rgba(250, 246, 240, 0.55)
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Update body - keep as ultimate fallback */
+body {
+  font-family: 'Lora', Georgia, serif;
+  background-color: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  /* Keep this as fallback #3 */
+  background-image: linear-gradient(rgba(250, 246, 240, 0.85), rgba(250, 246, 240, 0.92)),
+                    url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Mobile: use image only (save battery) */
+@media (max-width: 768px) {
+  .video-background,
+  .video-overlay {
+    display: none;
+  }
+}
+
+
