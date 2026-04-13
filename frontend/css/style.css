@@ -199,6 +199,17 @@ textarea { resize: vertical; min-height: 80px; }
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-logo:hover {
+  background: var(--blush);
+  border-color: var(--rose);
 }
 
 .user-badge {
@@ -600,4 +611,110 @@ textarea { resize: vertical; min-height: 80px; }
     opacity: 0;
     transform: translate(-50%, -50%) scale(0);
   }
+}
+
+
+
+/* ── User Menu Dropdown ── */
+.user-menu {
+  position: relative;
+}
+
+.user-badge {
+  background: var(--sage-pale);
+  color: var(--sage);
+  border: 1px solid var(--sage-light);
+  border-radius: 20px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.user-menu:hover .user-badge {
+  background: var(--sage-light);
+  border-color: var(--sage);
+}
+
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px var(--shadow);
+  min-width: 180px;
+  padding: 0.4rem;
+  z-index: 200;
+  animation: fadeUp 0.30s ease;
+}
+
+.user-menu:hover .user-dropdown {
+  display: block;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.dropdown-item:hover {
+  background: var(--cream);
+}
+
+.dropdown-danger { color: #c0392b; }
+.dropdown-danger:hover { background: #fdeaea; }
+
+.dropdown-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.3rem 0.4rem;
+}
+
+/* ── Settings Page ── */
+.settings-group {
+  margin-bottom: 1.25rem;
+}
+
+.settings-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.settings-btn {
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 0.6rem;
+  opacity: 0.75;
+  cursor: not-allowed !important;
+  position: relative;
+}
+
+.soon-badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  background: var(--sage-pale);
+  color: var(--sage);
+  border: 1px solid var(--sage-light);
+  border-radius: 20px;
+  padding: 0.1rem 0.55rem;
+  font-family: 'Lora', serif;
 }

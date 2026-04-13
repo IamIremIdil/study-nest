@@ -53,19 +53,29 @@
 <!-- ════════════════════ MAIN APP ════════════════════ -->
 <div id="app">
   <header class="app-header">
-    <div class="header-logo">🌿 StudyNest</div>
+    <button class="header-logo" onclick="showTab('dashboard', null)">🌿 StudyNest</button>
     <nav class="nav-tabs">
-      <button class="nav-tab active" onclick="showTab('dashboard')">🏡 Home</button>
-      <button class="nav-tab" onclick="showTab('timer')">🍅 Timer</button>
-      <button class="nav-tab" onclick="showTab('goals')">🎯 Goals</button>
-      <button class="nav-tab" onclick="showTab('notes')">💌 Notes</button>
-      <button class="nav-tab" onclick="showTab('mood')">🌸 Mood</button>
-    </nav>
-    <div style="display:flex;align-items:center;gap:0.75rem;">
-      <div class="user-badge">🌿 <span id="header-username"></span></div>
-      <button class="btn btn-ghost btn-sm" onclick="logout()">Sign out</button>
+  <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
+  <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
+  <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
+  <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
+  <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
+</nav>
+
+<div style="display:flex;align-items:center;gap:0.75rem;">
+  <div class="user-menu" id="user-menu">
+    <div class="user-badge user-menu-trigger">🌿 <span id="header-username"></span> ▾</div>
+    <div class="user-dropdown">
+      <button class="dropdown-item" onclick="showTab('settings', event)">⚙️ Settings</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item dropdown-item-danger" onclick="logout()">🚪 Sign out</button>
     </div>
-  </header>
+  </div>
+</div>
+  
+
+
+</header>
 
   <main class="main-content">
 
@@ -73,7 +83,7 @@
     <div id="tab-dashboard">
       <div class="welcome-banner">
         <h2>Good to see you, <span id="welcome-name"></span> 🌿</h2>
-        <p id="welcome-sub">You've got this — one step at a time.</p>
+        <p id="welcome-sub">You got this - one step at a time.</p>
       </div>
       <div class="dashboard-grid">
         <div class="stat-card">
@@ -224,6 +234,29 @@
         </div>
       </div>
     </div>
+
+
+    <!-- SETTINGS -->
+<div id="tab-settings" class="hidden">
+  <div class="card">
+    <div class="card-title">⚙️ Settings</div>
+    <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Manage your account and preferences.</p>
+
+    <div class="settings-group">
+      <div class="settings-label">Account</div>
+      <button class="btn btn-outline settings-btn" disabled>🔑 Reset Password <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🌐 Change Language <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🐙 Link GitHub Account <span class="soon-badge">soon</span></button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="settings-group">
+      <div class="settings-label">Danger Zone</div>
+      <button class="btn settings-btn" style="background:#fdeaea;color:#c0392b;border:1.5px solid #f5c6c6;" disabled>🗑️ Delete Account <span class="soon-badge" style="background:#fdeaea;color:#c0392b;border-color:#f5c6c6;">soon</span></button>
+    </div>
+  </div>
+</div>
 
   </main>
 </div>

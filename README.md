@@ -28,12 +28,12 @@ You should see:
 
 ### 2. Open the frontend
 
-Just open `frontend/index.html` in your browser — no build step needed!
+Just open `frontend/index.html` in your browser , no build step needed 🌸
 
-### 3. Create two accounts
+### 3. Pick a role
 
-- One for you (role: Supporter 🌸) 
-- One for your bf (role: Student 📚)
+- role: Supporter 🌸
+- role: Student 📚
 
 Then you can send each other love notes! 💌
 

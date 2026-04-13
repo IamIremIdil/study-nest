@@ -88,16 +88,17 @@ function showApp() {
 }
 
 // ── Navigation ────────────────────────────────
-function showTab(tab) {
+function showTab(tab, btn) {
   document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.remove('hidden');
-  event.target.classList.add('active');
+  if (btn) btn.classList.add('active');
   if (tab === 'notes')  loadInbox();
   if (tab === 'goals')  loadGoals();
   if (tab === 'mood')   loadMoodHistory();
   if (tab === 'timer')  loadSessions();
 }
+
 
 // ── API Helper ────────────────────────────────
 // Every request automatically includes the JWT token
@@ -314,10 +315,10 @@ async function loadPartners() {
   const tip  = document.getElementById('note-tip');
   sel.innerHTML = '';
   if (!data.users?.length) {
-    tip.textContent = 'No other users yet. Have your partner create an account so you can send notes! 🌸';
+    tip.textContent = 'No other users yet. Have your friends create an account so you can send notes! 🌸';
     return;
   }
-  tip.textContent = 'Sending notes to your partner — so sweet! 🌸';
+  tip.textContent = 'Sending notes to your friend — so sweet! 🌸';
   data.users.forEach(u => {
     const opt = document.createElement('option');
     opt.value = u.id;
