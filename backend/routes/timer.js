@@ -33,6 +33,15 @@ router.patch('/:id/complete', (req, res) => {
   res.json({ message: '🎉 Session complete! Great work!' });
 });
 
+
+
+// ADD this after the complete route
+router.delete('/:id', (req, res) => {
+  run('DELETE FROM pomodoro_sessions WHERE id = ? AND user_id = ?',
+    [req.params.id, req.user.id]);
+  res.json({ message: 'Session cancelled.' });
+});
+
 // GET /api/timer/stats — Get study stats for current user
 router.get('/stats', (req, res) => {
   const rows = all(`

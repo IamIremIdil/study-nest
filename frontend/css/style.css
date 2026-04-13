@@ -27,10 +27,11 @@ body {
   color: var(--text);
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse at 20% 20%, rgba(200, 217, 196, 0.3) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(240, 217, 208, 0.3) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9897a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
+      linear-gradient(rgba(250, 246, 240, 0.85), rgba(250, 246, 240, 0.92)),
+      url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 
 /* ── Auth Screen ── */
 #auth-screen {
@@ -176,7 +177,9 @@ textarea { resize: vertical; min-height: 80px; }
 #app { display: none; min-height: 100vh; }
 
 .app-header {
-  background: var(--warm-white);
+  background: rgba(255, 253, 249, 0.82);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 20px rgba(74, 55, 40, 0.08);
   border-bottom: 1px solid var(--border);
   padding: 1rem 2rem;
   display: flex;
@@ -249,7 +252,9 @@ textarea { resize: vertical; min-height: 80px; }
 
 /* ── Cards ── */
 .card {
-  background: var(--warm-white);
+  background: rgba(255, 253, 249, 0.88); /* slightly translucent so bg peeks through */
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 24px rgba(74, 55, 40, 0.1), 0 1px 4px rgba(201, 137, 122, 0.08);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 1.75rem;
@@ -277,7 +282,8 @@ textarea { resize: vertical; min-height: 80px; }
 }
 
 .stat-card {
-  background: var(--warm-white);
+  backdrop-filter: blur(6px);
+  background:rgba(255, 253, 249, 0.88);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 1.25rem 1.5rem;

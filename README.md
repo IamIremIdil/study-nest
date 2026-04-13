@@ -1,7 +1,6 @@
 # 🌿 StudyNest - Your Cozy Study Companion
 
 A full-stack web app built with **Node.js + Express** (backend) and vanilla HTML/CSS/JS (frontend).  
-Perfect for learning backend development - every concept is explained below!
 ˖᯽ ݁˖
 ---
 
@@ -86,19 +85,19 @@ studynest/
 ## 📝 File Descriptions
 
 ### Root Level
-- **`.gitignore`** - Applies to the whole project — tells Git what to ignore (node_modules, .env, etc.)
-- **`README.md`** - Documentation — how to run the project, what it does, what you learned
+- **`.gitignore`** - Applies to the whole project - tells Git what to ignore (node_modules, .env, etc.)
+- **`README.md`** - Documentation - how to run the project
 
 ### Backend (`/backend`)
-Everything that runs on the SERVER (Node.js). The user never sees this code directly — it just receives requests and sends back data.
+Everything that runs on the SERVER (Node.js). it just receives requests and sends back data.
 
 #### Configuration Files
-- **`.env.example`** - A safe template of .env to commit — has the variable NAMES but not the real values (e.g., `JWT_SECRET=your-secret-here` ← placeholder)
-- **`.gitignore`** - A second gitignore just for the backend folder — ignores node_modules/ and the real .env
-- **`package.json`** - The backend's "ingredient list" — lists every npm package the project needs. Running `npm install` reads this and downloads everything automatically. This is the Node.js equivalent of Python's requirements.txt
+- **`.env.example`** - A safe template of .env to commit - has the variable NAMES but not the real values (e.g., `JWT_SECRET=your-secret-here` ← placeholder)
+- **`.gitignore`** - A second gitignore just for the backend folder - ignores node_modules/ and the real .env
+- **`package.json`** - The backend's "ingredient list" - lists every npm package the project needs. Running `npm install` reads this and downloads everything automatically. This is the Node.js equivalent of Python's requirements.txt
 
 #### Core Files
-- **`server.js`** - THE ENTRY POINT — this is what you run: `node server.js`. Creates the Express app, registers all middleware and routes, starts listening on a port. Think of it as the front door of your backend
+- **`server.js`** - THE ENTRY POINT - this is what you run: `node server.js`. Creates the Express app, registers all middleware and routes, starts listening on a port. Think of it as the front door of your backend
 - **`db.js`** - Sets up the SQLite database and exports helper functions (run, get, all). Creates all the tables on first run (users, goals, notes, mood, timer). Every route file imports from here to read/write data
 
 #### Middleware (`/backend/middleware`)
