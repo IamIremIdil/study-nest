@@ -32,6 +32,7 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+}
 
 /* ── Auth Screen ── */
 #auth-screen {
@@ -472,8 +473,8 @@ textarea { resize: vertical; min-height: 80px; }
 .goal-desc { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
 
 .countdown-badge {
-  background: var(--sage-pale);
-  color: var(--sage);
+  background: rgba(237, 244, 245, 0.8);
+  color: rgba(122, 187, 201);
   border: 1px solid var(--sage-light);
   border-radius: 20px;
   padding: 0.25rem 0.75rem;
@@ -534,4 +535,69 @@ textarea { resize: vertical; min-height: 80px; }
   .app-header { flex-direction: column; gap: 1rem; padding: 1rem; }
   .nav-tabs { overflow-x: auto; width: 100%; }
   .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Mouse Sparkle Effect ── */
+.mouse-sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: mouse-sparkle-pop 0.3s ease-out forwards;
+}
+
+/* Star shape — no tilt, perfectly upright */
+.mouse-sparkle::before,
+.mouse-sparkle::after {
+  content: '';
+  position: absolute;
+  background: radial-gradient(circle, #ffffff, #fff5e0, #ffe0b3);
+  border-radius: 2px;
+  box-shadow: 0 0 8px 3px rgba(255, 220, 150, 0.8);
+}
+
+.mouse-sparkle::before {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%;
+  height: 100%;
+}
+
+.mouse-sparkle::after {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 30%;
+}
+
+/* Random sizes */
+.mouse-sparkle.small {
+  width: 8px;
+  height: 8px;
+}
+.mouse-sparkle.medium {
+  width: 14px;
+  height: 14px;
+}
+.mouse-sparkle.large {
+  width: 20px;
+  height: 20px;
+}
+
+/* YouTube-style pop animation — grows then shrinks */
+@keyframes mouse-sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
 }

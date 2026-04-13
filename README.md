@@ -4,6 +4,10 @@ A full-stack web app built with **Node.js + Express** (backend) and vanilla HTML
 ˖᯽ ݁˖
 ---
 
+
+<img width="1918" height="912" alt="Image" src="https://github.com/user-attachments/assets/a27071d0-0a4c-4435-bf71-8bacf4422ae3" />
+
+
 ## Quick Start ‧₊˚❀༉‧₊˚.
 
 ### 1. Set up the backend

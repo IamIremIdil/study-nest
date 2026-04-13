@@ -136,6 +136,7 @@
       <div class="card">
         <div class="section-header">
           <div class="section-title">Recent Sessions</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadSessions()">↻ Refresh</button>
         </div>
         <div id="sessions-list">
           <div class="empty-state"><div class="empty-icon">🌿</div>No sessions yet. Start studying!</div>
@@ -182,7 +183,7 @@
           <button class="mood-btn" onclick="selectEmoji('✨', this)">✨</button>
           <button class="mood-btn" onclick="selectEmoji('🐾', this)">🐾</button>
         </div>
-        <button class="btn btn-primary" onclick="sendNote()">💌 Send Note</button>
+        <button class="btn btn-primary" onclick="sendNote()" id="send-note-btn">💌 Send Note</button>
       </div>
       <div class="card">
         <div class="card-title">📬 Your Inbox</div>

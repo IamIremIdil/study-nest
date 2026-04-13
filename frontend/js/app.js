@@ -248,12 +248,11 @@ async function loadSessions() {
       <div class="goal-icon">${s.completed ? '✅' : '⏱️'}</div>
       <div class="goal-body">
         <div class="goal-title">${s.subject || 'Study session'}</div>
-        <div class="goal-desc">${s.duration_minutes} minutes · ${timeAgo(s.started_at)}</div>
+        <div class="goal-desc">${s.completed ? s.duration_minutes + ' min completed' : 'stopped early'} · ${timeAgo(s.started_at)}</div>
       </div>
       <div class="countdown-badge">${s.completed ? 'done' : 'incomplete'}</div>
     </div>`).join('');
 }
-
 // ── Goals ─────────────────────────────────────
 async function loadGoals() {
   const data = await api('GET', '/goals');
@@ -338,11 +337,55 @@ async function sendNote() {
   const message    = document.getElementById('note-msg').value.trim();
   if (!to_user_id) return toast('❌ No partner to send to yet!');
   if (!message)    return toast('❌ Write a message first!');
+  
   const data = await api('POST', '/notes', { to_user_id, message, emoji: selectedEmoji });
   if (data.error) return toast('❌ ' + data.error);
+  
   toast(data.message);
   document.getElementById('note-msg').value = '';
+  
+  // ✨ Burst stars at send button position
+  const sendButton = document.querySelector('#send-note-btn'); // or whatever your button ID is
+  if (sendButton) {
+    const rect = sendButton.getBoundingClientRect();
+    burstStars(rect.left + rect.width / 2, rect.top + rect.height / 2);
+  } else {
+    // fallback: center of screen
+    burstStars(window.innerWidth / 2, window.innerHeight / 2);
+  }
+  
   loadDashboard();
+}
+
+// ── Star Burst Effect ─────────────────────────────
+function burstStars(x, y) {
+  const starCount = 12; // number of stars per send
+  
+  for (let i = 0; i < starCount; i++) {
+    setTimeout(() => {
+      const star = document.createElement('div');
+      star.classList.add('mouse-sparkle');
+      
+      // Random size
+      const sizes = ['small', 'medium', 'large'];
+      const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+      star.classList.add(randomSize);
+      
+      // Random offset from click position (spread outward)
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 20 + Math.random() * 40;
+      const offsetX = Math.cos(angle) * distance;
+      const offsetY = Math.sin(angle) * distance;
+      
+      star.style.left = (x + offsetX) + 'px';
+      star.style.top = (y + offsetY) + 'px';
+      
+      document.body.appendChild(star);
+      
+      // Remove after animation completes
+      setTimeout(() => star.remove(), 300);
+    }, i * 20); // staggered appearance
+  }
 }
 
 async function loadInbox() {
@@ -422,3 +465,4 @@ function timeAgo(dateStr) {
     if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   return `${Math.floor(diff / 86400)}d ago`;
 }
+
