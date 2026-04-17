@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyNest 🌿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+
+  <video class="video-background" autoplay muted loop playsinline poster="assets/images/fallback-bg.jpg">
+    <source src="assets/videos/cozy-bg.mp4" type="video/mp4">
+    <source src="assets/videos/cozy-bg.webm" type="video/webm">
+    <img src="assets/images/fallback-bg.jpg" alt="Cozy background">
+  </video>
+  <div class="video-overlay"></div>
+
+
+
+
+<!-- ════════════════════ AUTH SCREEN ════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <span class="leaf">🌿</span>
+      <h1>StudyNest</h1>
+      <p>your cozy corner for exam season</p>
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="showAuthTab('login')">Sign In</button>
+      <button class="tab-btn" onclick="showAuthTab('register')">Create Account</button>
+    </div>
+
+    <div id="auth-msg"></div>
+
+    <!-- Login -->
+    <div id="login-form">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="e.g. vet_bf" autocomplete="username" />
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
+      <button class="btn btn-primary" onclick="handleLogin()">🌿 Sign In</button>
+    </div>
+
+    <!-- Register -->
+    <div id="register-form" class="hidden">
+      <label>Username</label>
+      <input type="text" id="reg-user" placeholder="e.g. vet_bf" autocomplete="username" />
+      <label>Password</label>
+      <input type="password" id="reg-pass" placeholder="at least 6 characters" autocomplete="new-password" />
+      <label>I am the…</label>
+      <select id="reg-role">
+        <option value="student">📚 Student (studying for exams)</option>
+        <option value="supporter">🌸 Supporter (sending love notes)</option>
+      </select>
+      <button class="btn btn-primary" onclick="handleRegister()">🌸 Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ MAIN APP ════════════════════ -->
+<div id="app">
+  <header class="app-header">
+    <button class="header-logo" onclick="showTab('dashboard', null)">🌿 StudyNest</button>
+    <nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
+  <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
+  <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
+  <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
+  <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
+</nav>
+
+<div style="display:flex;align-items:center;gap:0.75rem;">
+  <div class="user-menu" id="user-menu">
+    <div class="user-badge user-menu-trigger">🌿 <span id="header-username"></span> ▾</div>
+    <div class="user-dropdown">
+      <button class="dropdown-item" onclick="showTab('settings', event)">⚙️ Settings</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item dropdown-item-danger" onclick="logout()">🚪 Sign out</button>
+    </div>
+  </div>
+</div>
+  
+
+
+</header>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard">
+      <div class="welcome-banner">
+        <h2>Good to see you, <span id="welcome-name"></span> 🌿</h2>
+        <p id="welcome-sub">You got this - one step at a time. </p>
+        <img src="assets/images/avatar.png" alt="" class="welcome-avatar">
+      </div>
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🍅</div>
+          <div class="stat-val" id="stat-sessions">—</div>
+          <div class="stat-label">pomodoros done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-val" id="stat-hours">—</div>
+          <div class="stat-label">hours studied</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-val" id="stat-goals">—</div>
+          <div class="stat-label">goals set</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💌</div>
+          <div class="stat-val" id="stat-notes">—</div>
+          <div class="stat-label">love notes</div>
+        </div>
+      </div>
+      <div class="card" id="latest-note-card" style="display:none">
+        <div class="card-title">💌 Latest note for you</div>
+        <div id="latest-note-content"></div>
+      </div>
+      <div class="card" id="next-goal-card" style="display:none">
+        <div class="card-title">🎯 Coming up</div>
+        <div id="next-goal-content"></div>
+      </div>
+    </div>
+
+    <!-- TIMER -->
+    <div id="tab-timer" class="hidden">
+      <div class="card">
+        <div class="card-title">🍅 Pomodoro Timer</div>
+        <div style="margin-bottom:1rem;">
+          <label>Subject (optional)</label>
+          <input type="text" id="timer-subject" placeholder="e.g. Biology, Organic Chemistry…" />
+        </div>
+        <div class="duration-pills">
+          <button class="pill active" onclick="setDuration(25, this)">25 min</button>
+          <button class="pill" onclick="setDuration(45, this)">45 min</button>
+          <button class="pill" onclick="setDuration(60, this)">60 min</button>
+        </div>
+        <div class="timer-display">
+          <div class="timer-ring" id="timer-ring">
+            <div>
+              <div class="timer-time" id="timer-display">25:00</div>
+              <div class="timer-label" id="timer-status-text">ready</div>
+            </div>
+          </div>
+          <div class="timer-controls">
+            <button class="btn btn-primary" id="timer-start-btn" onclick="startTimer()">▶ Start</button>
+            <button class="btn btn-ghost" onclick="resetTimer()">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Recent Sessions</div>
+          <button class="btn btn-ghost btn-sm" onclick="loadSessions()">↻ Refresh</button>
+        </div>
+        <div id="sessions-list">
+          <div class="empty-state"><div class="empty-icon">🌿</div>No sessions yet. Start studying!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOALS -->
+    <div id="tab-goals" class="hidden">
+      <div class="card">
+        <div class="card-title">🎯 Add an Exam / Goal</div>
+        <label>Title</label>
+        <input type="text" id="goal-title" placeholder="e.g. Vet Med Entrance Exam" />
+        <label>Description (optional)</label>
+        <input type="text" id="goal-desc" placeholder="e.g. Need 85%+ to qualify" />
+        <label>Target Date</label>
+        <input type="date" id="goal-date" />
+        <button class="btn btn-primary" onclick="addGoal()">🎯 Add Goal</button>
+      </div>
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Your Goals</div>
+        </div>
+        <div id="goals-list">
+          <div class="empty-state"><div class="empty-icon">🌱</div>Add your first goal above!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div id="tab-notes" class="hidden">
+      <div class="card">
+        <div class="card-title">💌 Send a Love Note</div>
+        <div class="partner-select-note" id="note-tip">Loading users…</div>
+        <label>Send to</label>
+        <select id="note-to"></select>
+        <label>Your message</label>
+        <textarea id="note-msg" placeholder="Write something sweet… 🌸"></textarea>
+        <label>Pick an emoji</label>
+        <div class="mood-scale" style="margin-bottom:1rem;">
+          <button class="mood-btn selected" onclick="selectEmoji('🌸', this)">🌸</button>
+          <button class="mood-btn" onclick="selectEmoji('🌿', this)">🌿</button>
+          <button class="mood-btn" onclick="selectEmoji('☕', this)">☕</button>
+          <button class="mood-btn" onclick="selectEmoji('✨', this)">✨</button>
+          <button class="mood-btn" onclick="selectEmoji('🐾', this)">🐾</button>
+        </div>
+        <button class="btn btn-primary" onclick="sendNote()" id="send-note-btn">💌 Send Note</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📬 Your Inbox</div>
+        <div id="inbox-list">
+          <div class="empty-state"><div class="empty-icon">🌸</div>No notes yet…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOOD -->
+    <div id="tab-mood" class="hidden">
+      <div class="card">
+        <div class="card-title">🌸 How are you feeling?</div>
+        <label style="margin-bottom:0.75rem;font-size:0.95rem;">Mood</label>
+        <div class="mood-scale" id="mood-scale">
+          <button class="mood-btn" onclick="selectMood(1, this)">😞<span>rough</span></button>
+          <button class="mood-btn" onclick="selectMood(2, this)">😕<span>meh</span></button>
+          <button class="mood-btn" onclick="selectMood(3, this)">😊<span>okay</span></button>
+          <button class="mood-btn" onclick="selectMood(4, this)">😄<span>good</span></button>
+          <button class="mood-btn" onclick="selectMood(5, this)">🤩<span>great</span></button>
+        </div>
+        <label style="margin-bottom:0.75rem;font-size:0.95rem;">Energy Level</label>
+        <div class="mood-scale" id="energy-scale">
+          <button class="mood-btn" onclick="selectEnergy(1, this)">🪫<span>drained</span></button>
+          <button class="mood-btn" onclick="selectEnergy(2, this)">😴<span>tired</span></button>
+          <button class="mood-btn" onclick="selectEnergy(3, this)">🙂<span>okay</span></button>
+          <button class="mood-btn" onclick="selectEnergy(4, this)">⚡<span>alert</span></button>
+          <button class="mood-btn" onclick="selectEnergy(5, this)">🚀<span>pumped</span></button>
+        </div>
+        <label>Any notes? (optional)</label>
+        <input type="text" id="mood-note" placeholder="e.g. Studied 3 hours, feeling good!" />
+        <button class="btn btn-primary" onclick="logMood()">🌸 Log Check-In</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Mood History</div>
+        <div id="mood-history">
+          <div class="empty-state"><div class="empty-icon">🌿</div>No entries yet</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SETTINGS -->
+<div id="tab-settings" class="hidden">
+  <div class="card">
+    <div class="card-title">⚙️ Settings</div>
+    <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Manage your account and preferences.</p>
+
+    <div class="settings-group">
+      <div class="settings-label">Account</div>
+      <button class="btn btn-outline settings-btn" disabled>🌴 Vacation Mode <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🔑 Reset Password <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🌐 Change Language <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🐙 Link GitHub Account <span class="soon-badge">soon</span></button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="settings-group">
+      <div class="settings-label">Danger Zone</div>
+      <button class="btn settings-btn" style="background:#fdeaea;color:#c0392b;border:1.5px solid #f5c6c6;" disabled>🗑️ Delete Account <span class="soon-badge" style="background:#fdeaea;color:#c0392b;border-color:#f5c6c6;">soon</span></button>
+    </div>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
