@@ -11,6 +11,7 @@
 Demo accounts:
 - Username: `Sarah` / Password: `demo123`
 - Username: `Emma` / Password: `demo123`
+
 ˖᯽ ݁˖
 ---
 <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/b4c0626c-1feb-4243-a461-13469c5c4da5" />
@@ -54,6 +55,11 @@ Then you can send each other love notes! 💌
 ```
 studynest/
 │
+├── demo.html
+├── assets/
+        ├── images/
+        └──videos/
+├── index.html
 ├── .gitignore
 ├── README.md
 │
@@ -75,12 +81,17 @@ studynest/
 │       └── goals.js
 │
 └── frontend/
+    ├── assets/
+    │   ├── images/
+    │   └──videos/
+    │
     ├── index.html
+    ├── demo.html
     ├── css/
     │   └── style.css
     └── js/
         ├─── app.js
-        ├─── demo.js
+        └── demo.js
 ```
 ### Gallery: 
 
