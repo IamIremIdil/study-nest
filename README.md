@@ -13,7 +13,7 @@ Demo accounts:
 - Username: `Emma` / Password: `demo123`
 ˖᯽ ݁˖
 ---
-
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/b4c0626c-1feb-4243-a461-13469c5c4da5" />
 
 <img width="1918" height="912" alt="Image" src="https://github.com/user-attachments/assets/e6ce2a3f-d375-4938-b500-45b03122840e" />
 
