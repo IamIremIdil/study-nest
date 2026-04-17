@@ -85,6 +85,7 @@ function showApp() {
   }
   loadDashboard();
   loadPartners();
+  loadFriendRequests();
 }
 
 // ── Navigation ────────────────────────────────
@@ -510,6 +511,25 @@ async function loadFriendRequests() {
     api('GET', '/friends'),
   ]);
 
+  const friendsList = document.getElementById('friends-list');
+  if (friendData.friends?.length > 0) {
+    friendsList.innerHTML = friendData.friends.map(f => `
+      <div class="friend-item">
+        <div style="font-size:1.5rem">${f.role === 'student' ? '📚' : '🌸'}</div>
+        <div style="flex:1">
+          <div style="font-weight:500;color:var(--text)">${f.username}</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);font-style:italic">${f.role}</div>
+        </div>
+        <button class="btn btn-reject btn-sm" onclick="deleteFriend(${f.id})">✕</button>
+      </div>`).join('');
+  } else {
+    friendsList.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div>No friends yet — add some!</div>';
+  }
+
+  console.log('requests:', reqData);
+  console.log('friends:', friendData);
+
+
   // Incoming pending requests
   const reqSection = document.getElementById('friend-requests-section');
   const reqList    = document.getElementById('friend-requests-list');
@@ -531,19 +551,24 @@ async function loadFriendRequests() {
   }
 
   // Accepted friends list
-  const friendsList = document.getElementById('friends-list');
-  if (friendData.friends?.length > 0) {
-    friendsList.innerHTML = friendData.friends.map(f => `
-      <div class="friend-item">
-        <div style="font-size:1.5rem">${f.role === 'student' ? '📚' : '🌸'}</div>
-        <div style="flex:1">
-          <div style="font-weight:500;color:var(--text)">${f.username}</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);font-style:italic">${f.role}</div>
-        </div>
-      </div>`).join('');
-  } else {
-    friendsList.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div>No friends yet — add some!</div>';
-  }
+  friendsList.innerHTML = friendData.friends.map(f => `
+  <div class="friend-item">
+    <div style="font-size:1.5rem">${f.role === 'student' ? '📚' : '🌸'}</div>
+    <div style="flex:1">
+      <div style="font-weight:500;color:var(--text)">${f.username}</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);font-style:italic">${f.role}</div>
+    </div>
+    <button class="btn btn-reject btn-sm" onclick="deleteFriend(${f.id})">✕</button>
+  </div>`).join('');
+}
+
+
+async function deleteFriend(friendId) {
+  const data = await api('DELETE', `/friends/${friendId}`, null);
+  if (data.error) return toast('❌ ' + data.error);
+  toast('👋 Friend removed.');
+  loadFriendRequests();
+  loadPartners();
 }
 
 async function respondToRequest(id, action) {

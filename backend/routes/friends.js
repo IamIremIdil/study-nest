@@ -53,4 +53,13 @@ router.get('/', auth, (req, res) => {
   res.json({ friends });
 });
 
+
+router.delete('/:id', auth, (req, res) => {
+  run(`DELETE FROM friend_requests WHERE 
+    (from_user_id = ? AND to_user_id = ?) OR 
+    (from_user_id = ? AND to_user_id = ?)`,
+    [req.user.id, req.params.id, req.params.id, req.user.id]);
+  res.json({ message: 'Friend removed.' });
+});
+
 module.exports = router;
