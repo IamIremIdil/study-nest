@@ -36,6 +36,10 @@ app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+const friendsRoutes = require('./routes/friends');
+// ...
+app.use('/api/friends', friendsRoutes);
+
 app.listen(PORT, () => {
   console.log(`🌸 StudyNest running at http://localhost:${PORT}`);
 });

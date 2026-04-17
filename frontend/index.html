@@ -207,6 +207,32 @@
         </div>
         <button class="btn btn-primary" onclick="sendNote()" id="send-note-btn">💌 Send Note</button>
       </div>
+
+
+      <!-- FRIENDS -->
+<div class="card">
+  <div class="card-title">👥 Friends</div>
+
+  <label>Add by username</label>
+  <div class="friend-add-row">
+    <input type="text" id="friend-username" placeholder="e.g. vet_bf" style="margin-bottom:0;" />
+    <button class="btn btn-sage" id="add-friend-btn" onclick="sendFriendRequest()">🌸 Add</button>
+  </div>
+
+  <div id="friend-requests-section" class="hidden">
+    <div class="section-title" style="margin-bottom:0.75rem;">💌 Pending Requests</div>
+    <div id="friend-requests-list"></div>
+  </div>
+
+  <div id="friends-list-section">
+    <div class="section-title" style="margin-bottom:0.75rem;">Your Friends</div>
+    <div id="friends-list">
+      <div class="empty-state"><div class="empty-icon">🌿</div>No friends yet — add some!</div>
+    </div>
+  </div>
+</div>
+
+
       <div class="card">
         <div class="card-title">📬 Your Inbox</div>
         <div id="inbox-list">

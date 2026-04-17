@@ -93,7 +93,7 @@ function showTab(tab, btn) {
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.remove('hidden');
   if (btn) btn.classList.add('active');
-  if (tab === 'notes')  loadInbox();
+  if (tab === 'notes')  { loadInbox(); loadFriendRequests(); }
   if (tab === 'goals')  loadGoals();
   if (tab === 'mood')   loadMoodHistory();
   if (tab === 'timer')  loadSessions();
@@ -489,3 +489,67 @@ if (video) {
   }
 }
 
+
+
+
+// ── Friends ───────────────────────────────────
+
+async function sendFriendRequest() {
+  const username = document.getElementById('friend-username').value.trim();
+  if (!username) return toast('❌ Enter a username to add.');
+  if (username === currentUser.username) return toast('❌ You can\'t add yourself 🌿');
+  const data = await api('POST', '/friends/request', { username });
+  if (data.error) return toast('❌ ' + data.error);
+  toast(data.message || '🌸 Friend request sent!');
+  document.getElementById('friend-username').value = '';
+}
+
+async function loadFriendRequests() {
+  const [reqData, friendData] = await Promise.all([
+    api('GET', '/friends/requests'),
+    api('GET', '/friends'),
+  ]);
+
+  // Incoming pending requests
+  const reqSection = document.getElementById('friend-requests-section');
+  const reqList    = document.getElementById('friend-requests-list');
+
+  if (reqData.requests?.length > 0) {
+    reqSection.classList.remove('hidden');
+    reqList.innerHTML = reqData.requests.map(r => `
+      <div class="friend-request-item">
+        <div style="font-size:1.5rem">🌸</div>
+        <div style="flex:1">
+          <span style="font-weight:500;color:var(--text)">${r.from_username}</span>
+          <span style="font-size:0.82rem;color:var(--text-muted);margin-left:0.5rem">wants to be friends</span>
+        </div>
+        <button class="btn btn-accept btn-sm" onclick="respondToRequest(${r.id}, 'accept')">✓ Accept</button>
+        <button class="btn btn-reject btn-sm"  onclick="respondToRequest(${r.id}, 'reject')">✕</button>
+      </div>`).join('');
+  } else {
+    reqSection.classList.add('hidden');
+  }
+
+  // Accepted friends list
+  const friendsList = document.getElementById('friends-list');
+  if (friendData.friends?.length > 0) {
+    friendsList.innerHTML = friendData.friends.map(f => `
+      <div class="friend-item">
+        <div style="font-size:1.5rem">${f.role === 'student' ? '📚' : '🌸'}</div>
+        <div style="flex:1">
+          <div style="font-weight:500;color:var(--text)">${f.username}</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);font-style:italic">${f.role}</div>
+        </div>
+      </div>`).join('');
+  } else {
+    friendsList.innerHTML = '<div class="empty-state"><div class="empty-icon">🌿</div>No friends yet — add some!</div>';
+  }
+}
+
+async function respondToRequest(id, action) {
+  const data = await api('PATCH', `/friends/requests/${id}/${action}`, {});
+  if (data.error) return toast('❌ ' + data.error);
+  toast(action === 'accept' ? '🌸 Friend added!' : '👋 Request declined.');
+  loadFriendRequests();
+  loadPartners(); // refresh the "Send to" dropdown in Notes
+}

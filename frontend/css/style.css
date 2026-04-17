@@ -767,3 +767,77 @@ body {
   user-select: none;
 }
 
+
+
+/* ── Friends ── */
+.friend-add-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  align-items: center;
+}
+
+.friend-add-row input { margin-bottom: 0; flex: 1; }
+
+.friend-request-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--sage-pale);
+  border: 1.5px solid var(--sage-light);
+  border-radius: 14px;
+  margin-bottom: 0.6rem;
+  transition: all 0.2s;
+  animation: fadeUp 0.3s ease;
+}
+
+.friend-request-item:hover {
+  background: var(--sage-light);
+  border-color: var(--sage);
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 0.6rem;
+  transition: all 0.2s;
+  animation: fadeUp 0.3s ease;
+}
+
+.friend-item:hover {
+  border-color: var(--rose);
+  background: var(--blush);
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.btn-accept {
+  background: var(--sage-pale);
+  color: var(--sage);
+  border: 1.5px solid var(--sage-light);
+}
+.btn-accept:hover {
+  background: var(--sage);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(143, 168, 138, 0.35);
+}
+
+.btn-reject {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1.5px solid #f5c6c6;
+}
+.btn-reject:hover {
+  background: #c0392b;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(192, 57, 43, 0.25);
+}
+
