@@ -20,25 +20,6 @@
 /* ── Reset ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Base ── */
-body {
-  
-  font-family: 'Lora', Georgia, serif;
-  background-color: var(--cream);
-  color: var(--text);
-  min-height: 100vh;
-  /* background-image:
-      linear-gradient(rgba(250, 246, 240, 0.85), rgba(250, 246, 240, 0.92)),
-      url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; */
-}
-
-
-
-
-
 /* ── Auth Screen ── */
 #auth-screen {
   display: flex;
@@ -46,6 +27,8 @@ body {
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
+  position: relative;   /* ADD THIS */
+  z-index: 1;
 }
 
 .auth-card {
@@ -184,10 +167,9 @@ textarea { resize: vertical; min-height: 80px; }
 #app { display: none; min-height: 100vh; }
 
 .app-header {
-  background: rgba(255, 253, 249, 0.7); /* slightly translucent so bg peeks through */
-  backdrop-filter: blur(12px);
+  background: transparent; /* slightly translucent so bg peeks through */
   box-shadow: 0 1px 20px rgba(74, 55, 40, 0.08);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
@@ -201,7 +183,7 @@ textarea { resize: vertical; min-height: 80px; }
 .header-logo {
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
-  color: var(--rose-deep);
+  color: var(--cream);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -327,15 +309,6 @@ textarea { resize: vertical; min-height: 80px; }
   margin-bottom: 1.5rem;
   position: relative;
   overflow: hidden;
-}
-
-.welcome-banner::before {
-  content: '🌿';
-  position: absolute;
-  right: 1.5rem;
-  top: 1rem;
-  font-size: 3rem;
-  opacity: 0.3;
 }
 
 .welcome-banner h2 {
@@ -777,4 +750,19 @@ body {
   }
 }
 
+
+
+.welcome-avatar {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 1;
+  pointer-events: none;
+  user-select: none;
+}
 
