@@ -1,6 +1,8 @@
 # 🌿 StudyNest - Your Cozy Study Companion
 
 <h3>A full-stack web app built with **Node.js + Express** (backend) and vanilla HTML/CSS/JS (frontend).</h3> 
+
+<h3>Try the live demo here: [Try StudyNest](https://studynest.onrender.com)<h3>
 ˖᯽ ݁˖
 ---
 
