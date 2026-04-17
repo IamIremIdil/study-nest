@@ -4,7 +4,7 @@
 
 ## Try the live demo here:
 
-**[Try StudyNest Demo](https://IamIremIdil.github.io/studynest/demo.html)**
+**[Try StudyNest Demo](https://iamiremidil.github.io/study-nest/)**
 
 *No installation needed - works in your browser!*
 
