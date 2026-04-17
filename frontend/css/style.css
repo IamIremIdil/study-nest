@@ -841,3 +841,23 @@ body {
   box-shadow: 0 3px 10px rgba(192, 57, 43, 0.25);
 }
 
+
+.btn-accept {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1.5px solid #a5d6a7;
+}
+.btn-accept:hover {
+  background: #2e7d32;
+  color: white;
+}
+.btn-reject {
+  background: #fdeaea;
+  color: #c0392b;
+  border: 1.5px solid #f5c6c6;
+}
+.btn-reject:hover {
+  background: #c0392b;
+  color: white;
+}
+

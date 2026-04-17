@@ -94,6 +94,7 @@ function createTables() {
       completed INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id)
+      )
     `);
   db.run(`
     CREATE TABLE IF NOT EXISTS friend_requests (

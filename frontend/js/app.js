@@ -310,16 +310,16 @@ async function deleteGoal(id) {
 
 // ── Notes ─────────────────────────────────────
 async function loadPartners() {
-  const data = await api('GET', '/auth/users');
+  const data = await api('GET', '/friends');
   const sel  = document.getElementById('note-to');
   const tip  = document.getElementById('note-tip');
   sel.innerHTML = '';
-  if (!data.users?.length) {
-    tip.textContent = 'No other users yet. Have your friends create an account so you can send notes! 🌸';
+  if (!data.friends?.length) {
+    tip.textContent = 'No friends yet — add some in the Notes tab! 🌿';
     return;
   }
   tip.textContent = 'Sending notes to your friend — so sweet! 🌸';
-  data.users.forEach(u => {
+  data.friends.forEach(u => {
     const opt = document.createElement('option');
     opt.value = u.id;
     opt.textContent = `${u.role === 'student' ? '📚' : '🌸'} ${u.username}`;
