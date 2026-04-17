@@ -198,7 +198,7 @@ textarea { resize: vertical; min-height: 80px; }
 .header-logo:hover {
   background: var(--blush);
   border-color: var(--rose-deep);
-  color: var(--rose-deep);
+  color: var(--rose);
 }
 
 .user-badge {

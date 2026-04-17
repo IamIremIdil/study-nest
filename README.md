@@ -2,7 +2,15 @@
 
 <h3>A full-stack web app built with **Node.js + Express** (backend) and vanilla HTML/CSS/JS (frontend).</h3> 
 
-<h3>Try the live demo here: [Try StudyNest](https://studynest.onrender.com)<h3>
+## Try the live demo here:
+
+**[Try StudyNest Demo](https://yourusername.github.io/studynest/demo.html)**
+
+*No installation needed - works in your browser!*
+
+Demo accounts:
+- Username: `Sarah` / Password: `demo123`
+- Username: `Emma` / Password: `demo123`
 ˖᯽ ݁˖
 ---
 
@@ -71,7 +79,8 @@ studynest/
     ├── css/
     │   └── style.css
     └── js/
-        └── app.js
+        ├─── app.js
+        ├─── demo.js
 ```
 ### Gallery: 
 
