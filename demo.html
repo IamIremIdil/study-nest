@@ -10,6 +10,21 @@
 <body>
 
 
+
+  <script>
+  // Override fetch to debug
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    console.log('FETCH CALLED:', args[0]);
+    if (args[0].includes('localhost') || args[0].includes('127.0.0.1')) {
+      alert('ERROR: App trying to call ' + args[0] + ' - this should not happen in demo mode!');
+    }
+    return originalFetch(...args);
+  };
+</script>
+
+
+
   <video class="video-background" autoplay muted loop playsinline poster="assets/images/fallback-bg.jpg">
     <source src="assets/videos/cozy-bg.mp4" type="video/mp4">
     <source src="assets/videos/cozy-bg.webm" type="video/webm">
