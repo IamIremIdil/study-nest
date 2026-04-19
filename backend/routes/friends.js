@@ -3,20 +3,9 @@ const router = express.Router();
 const { run, all, get } = require('../db');
 const { authenticate } = require('../middleware/auth');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'studynest_secret';
-router.use(authenticate);
+router.use(authenticate); // ← this covers everything, no per-route auth needed
 
-function auth(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'No token' });
-  try {
-    req.user = jwt.verify(token, JWT_SECRET);
-    next();
-  } catch { res.status(401).json({ error: 'Invalid token' }); }
-}
-
-// Send friend request
-router.post('/request', auth, (req, res) => {
+router.post('/request', (req, res) => {
   const { username } = req.body;
   const target = get('SELECT id FROM users WHERE username = ?', [username]);
   if (!target) return res.json({ error: 'User not found' });
@@ -26,8 +15,7 @@ router.post('/request', auth, (req, res) => {
   res.json({ message: '🌸 Friend request sent!' });
 });
 
-// Get incoming requests
-router.get('/requests', auth, (req, res) => {
+router.get('/requests', (req, res) => {
   const requests = all(`
     SELECT fr.id, u.username as from_username 
     FROM friend_requests fr JOIN users u ON fr.from_user_id = u.id
@@ -35,16 +23,14 @@ router.get('/requests', auth, (req, res) => {
   res.json({ requests });
 });
 
-// Accept or reject
-router.patch('/requests/:id/:action', auth, (req, res) => {
+router.patch('/requests/:id/:action', (req, res) => {
   const { id, action } = req.params;
   const status = action === 'accept' ? 'accepted' : 'rejected';
   run('UPDATE friend_requests SET request_status = ? WHERE id = ?', [status, id]);
   res.json({ message: action === 'accept' ? '🌸 Friend added!' : 'Request declined.' });
 });
 
-// Get friends list
-router.get('/', auth, (req, res) => {
+router.get('/', (req, res) => {
   const friends = all(`
     SELECT u.id, u.username, u.role FROM friend_requests fr
     JOIN users u ON (fr.from_user_id = u.id OR fr.to_user_id = u.id)
@@ -54,8 +40,7 @@ router.get('/', auth, (req, res) => {
   res.json({ friends });
 });
 
-
-router.delete('/:id', auth, (req, res) => {
+router.delete('/:id', (req, res) => {
   run(`DELETE FROM friend_requests WHERE 
     (from_user_id = ? AND to_user_id = ?) OR 
     (from_user_id = ? AND to_user_id = ?)`,
