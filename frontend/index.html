@@ -66,12 +66,14 @@
   <header class="app-header">
     <button class="header-logo" onclick="showTab('dashboard', null)">🌿 StudyNest</button>
     <nav class="nav-tabs">
-  <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
-  <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
-  <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
-  <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
-  <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
-</nav>
+      <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
+      <button class="nav-tab" onclick="showTab('resources', this)">📓 Resources</button>
+      <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
+      <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
+      <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
+      <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
+      <button class="nav-tab nav-tab-disabled" title="Coming soon!">🏠 Live Study Room</button>
+    </nav>
 
 <div style="display:flex;align-items:center;gap:0.75rem;">
   <div class="user-menu" id="user-menu">
@@ -207,8 +209,6 @@
         </div>
         <button class="btn btn-primary" onclick="sendNote()" id="send-note-btn">💌 Send Note</button>
       </div>
-
-
   
 <!-- FRIENDS -->
 <div class="card">
@@ -235,7 +235,6 @@
     </div>
   </div>
 </div>
-
 
       <div class="card">
         <div class="card-title">📬 Your Inbox</div>
@@ -277,8 +276,15 @@
       </div>
     </div>
 
-
-    <!-- SETTINGS -->
+<!-- RESOURCES -->
+<div id="tab-resources" class="hidden">
+  <div class="card">
+    <div class="card-title">📓 Resources</div>
+    <p style="color:var(--text-muted);font-style:italic;">View your resources:</p>
+  </div>
+</div> 
+    
+<!-- SETTINGS -->
 <div id="tab-settings" class="hidden">
   <div class="card">
     <div class="card-title">⚙️ Settings</div>
