@@ -31,7 +31,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // catch-all MUST be last
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 

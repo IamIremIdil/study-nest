@@ -510,6 +510,12 @@ async function loadFriendRequests() {
     api('GET', '/friends/requests'),
     api('GET', '/friends'),
   ]);
+  
+  // near the top of loadFriendRequests, after the await:
+  if (friendData.error || reqData.error) {
+  console.error('Friends API error:', friendData.error || reqData.error);
+  return;
+  }
 
   const friendsList = document.getElementById('friends-list');
   if (friendData.friends?.length > 0) {

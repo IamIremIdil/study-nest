@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { run, all, get } = require('../db');
-const jwt = require('jsonwebtoken');
+const { authenticate } = require('../middleware/auth');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'studynest_secret';
+router.use(authenticate);
 
 function auth(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
