@@ -72,6 +72,7 @@ function logout() {
   token = null; currentUser = null;
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
+  applyTheme();
 }
 
 // ── App Init ──────────────────────────────────
@@ -108,9 +109,10 @@ function showTab(tab, btn) {
   document.getElementById('tab-' + tab).classList.remove('hidden');
   if (btn) btn.classList.add('active');
   if (tab === 'notes')  { loadInbox(); loadFriendRequests(); }
-  if (tab === 'goals')  loadGoals();
-  if (tab === 'mood')   loadMoodHistory();
-  if (tab === 'timer')  loadSessions();
+  if (tab === 'goals')  { loadGoals(); loadCalendar(); }
+  if (tab === 'mood')   { loadMoodHistory(); }
+  if (tab === 'timer')  { loadSessions(); }
+  if (tab === 'resources') { renderLinks(); renderUploadedFiles(); }
 }
 
 
@@ -167,7 +169,12 @@ async function loadDashboard() {
   const upcoming = goals.goals?.filter(g => !g.completed && g.days_remaining !== null && g.days_remaining >= 0);
   if (upcoming?.length > 0) {
     const g = upcoming[0];
-    const urgency = g.days_remaining <= 3 ? 'soon' : g.days_remaining <= 7 ? 'urgent' : '';
+    const urgency = g.days_remaining !== null && g.days_remaining <= 3 ? 'soon'
+              : g.days_remaining !== null && g.days_remaining <= 7 ? 'urgent' : '';
+    const countdownText = g.days_remaining === null ? ''
+  : g.days_remaining < 0  ? `${Math.abs(g.days_remaining)}d ago`
+  : g.days_remaining === 0 ? '📅 today'
+  : `${g.days_remaining}d left`;
     document.getElementById('next-goal-card').style.display = 'block';
     document.getElementById('next-goal-content').innerHTML = `
       <div class="goal-item">
@@ -615,30 +622,30 @@ function setBg(key) {
 }
 
 function applyBg() {
-  const key = localStorage.getItem('sn_bg') || 'video';
-  const theme = localStorage.getItem('sn_theme') || 'light';
-  const opt   = BG_OPTIONS[key] || BG_OPTIONS[defaultBg]; // ← fallback if key is stale
-  const video   = document.querySelector('.video-background');
+  const isMobile  = window.innerWidth <= 768;
+  const defaultBg = isMobile ? 'forest' : 'video';
+  const key    = localStorage.getItem('sn_bg') || defaultBg;
+  const theme  = localStorage.getItem('sn_theme') || 'light';
+  const opt    = BG_OPTIONS[key] || BG_OPTIONS[defaultBg];
+  const video  = document.querySelector('.video-background');
   const overlay = document.querySelector('.video-overlay');
 
-  // overlay strength: dark mode gets a darker tint, light gets a lighter one
-  const lightOverlay = 'linear-gradient(rgba(250,246,240,0.35), rgba(250,246,240,0.45))';
-  const darkOverlay  = 'linear-gradient(rgba(10,8,6,0.55), rgba(10,8,6,0.65))';
+  const lightOverlay = 'linear-gradient(rgba(250,246,240,0.08), rgba(250,246,240,0.12))';
+  const darkOverlay  = 'linear-gradient(rgba(10,8,6,0.35), rgba(10,8,6,0.45))';
   const overlayGrad  = theme === 'dark' ? darkOverlay : lightOverlay;
 
-  
   if (opt.type === 'video') {
-    if (video)   { video.style.display = ''; }
-    if (overlay) { overlay.style.display = ''; }
+    if (video)   video.style.display = '';
+    if (overlay) { overlay.style.display = ''; overlay.style.background = overlayGrad; }
     document.body.style.backgroundImage = '';
   } else {
-    if (video)   { video.style.display = 'none'; }
-    if (overlay) { overlay.style.display = 'none'; }
+    if (video)   video.style.display = 'none';
+    if (overlay) overlay.style.display = 'none';
     if (opt.url) {
-      document.body.style.backgroundImage =
-        `linear-gradient(rgba(250,246,240,0.6),rgba(250,246,240,0.75)), url('${opt.url}')`;
+      document.body.style.backgroundImage = `${overlayGrad}, url('${opt.url}')`;
       document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundAttachment = 'fixed';
+      document.body.style.backgroundPosition = 'center';
     } else {
       document.body.style.backgroundImage = 'none';
     }
@@ -667,4 +674,252 @@ function applyTheme() {
   document.documentElement.setAttribute('data-theme', theme);
   document.getElementById('theme-light')?.classList.toggle('active', theme === 'light');
   document.getElementById('theme-dark')?.classList.toggle('active',  theme === 'dark');
+  updateAuthThemeBtn(); // ← add this
+}
+
+
+
+// ── Resources ─────────────────────────────────
+function getResourceKey(type) {
+  return `sn_${type}_${currentUser?.username || 'guest'}`;
+}
+
+// replace every localStorage.getItem('sn_links') with localStorage.getItem(getResourceKey('links'))
+// replace every localStorage.setItem('sn_links', ...) with localStorage.setItem(getResourceKey('links'), ...)
+// same for 'sn_files' → getResourceKey('files')
+let resourceLinks = JSON.parse(localStorage.getItem(getResourceKey('links')) || '[]');
+let uploadedFiles = JSON.parse(localStorage.getItem(getResourceKey('links')) || '[]');
+
+function handleFileUpload(input) {
+  const files = Array.from(input.files);
+  files.forEach(f => {
+    const reader = new FileReader();
+    const isImage = f.type.startsWith('image/');
+    if (isImage) {
+      reader.onload = e => {
+        uploadedFiles.push({ name: f.name, size: f.size, type: f.type, preview: e.target.result, title: '', desc: '' });
+        localStorage.setItem(getResourceKey('files'), JSON.stringify(uploadedFiles));
+        renderUploadedFiles();
+      };
+      reader.readAsDataURL(f);
+    } else {
+      uploadedFiles.push({ name: f.name, size: f.size, type: f.type, preview: null, title: '', desc: '' });
+      localStorage.setItem(getResourceKey('files'), JSON.stringify(uploadedFiles));
+      renderUploadedFiles();
+    }
+  });
+}
+
+function renderUploadedFiles() {
+  const list = document.getElementById('uploaded-files-list');
+  if (!list) return;
+  if (!uploadedFiles.length) { list.innerHTML = ''; return; }
+  list.innerHTML = uploadedFiles.map((f, i) => `
+    <div class="resource-item" style="flex-direction:column;align-items:stretch;gap:0.75rem;">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        ${f.preview
+          ? `<img src="${f.preview}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />`
+          : `<span style="font-size:1.5rem;flex-shrink:0;">${f.type?.includes('pdf') ? '📄' : '📎'}</span>`}
+        <div style="flex:1;min-width:0;">
+          <input class="resource-inline-input" value="${f.title || ''}" placeholder="Add a title…"
+            oninput="updateFile(${i},'title',this.value)" />
+          <div style="font-size:0.76rem;color:var(--text-muted);margin-top:0.15rem;">${f.name} · ${(f.size/1024).toFixed(1)} KB</div>
+        </div>
+        <button class="btn btn-reject btn-sm" onclick="removeFile(${i})">✕</button>
+      </div>
+      <input class="resource-inline-input" value="${f.desc || ''}" placeholder="Add a description… (optional)"
+        oninput="updateFile(${i},'desc',this.value)" style="font-size:0.85rem;" />
+    </div>`).join('');
+}
+
+function updateFile(i, field, val) {
+  uploadedFiles[i][field] = val;
+  localStorage.setItem(getResourceKey('files'), JSON.stringify(uploadedFiles));
+}
+
+function removeFile(i) {
+  uploadedFiles.splice(i, 1);
+  localStorage.setItem(getResourceKey('files'), JSON.stringify(uploadedFiles));
+  renderUploadedFiles();
+}
+
+function showAddLinkForm() {
+  document.getElementById('add-link-form').classList.remove('hidden');
+  document.getElementById('link-title').focus();
+}
+
+function cancelLink() {
+  document.getElementById('add-link-form').classList.add('hidden');
+  document.getElementById('link-title').value = '';
+  document.getElementById('link-url').value   = '';
+  document.getElementById('link-desc').value  = '';
+}
+
+function acceptLink() {
+  const title = document.getElementById('link-title').value.trim();
+  const url   = document.getElementById('link-url').value.trim();
+  const desc  = document.getElementById('link-desc').value.trim();
+  if (!title || !url) return toast('❌ Title and URL are required.');
+  resourceLinks.push({ title, url, desc });
+  localStorage.setItem('sn_links', JSON.stringify(resourceLinks));
+  cancelLink();
+  renderLinks();
+  toast('🔗 Link added!');
+}
+
+function removeLink(i) {
+  resourceLinks.splice(i, 1);
+  localStorage.setItem('sn_links', JSON.stringify(resourceLinks));
+  renderLinks();
+}
+
+function getYoutubeThumbnail(url) {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg` : null;
+}
+
+function renderLinks() {
+  const list = document.getElementById('links-list');
+  if (!list) return;
+  if (!resourceLinks.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">🔗</div>No links yet</div>';
+    return;
+  }
+  list.innerHTML = resourceLinks.map((l, i) => {
+    const thumb = getYoutubeThumbnail(l.url);
+    return `
+      <div class="resource-item" style="flex-direction:column;align-items:stretch;gap:0.75rem;">
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          ${thumb
+            ? `<img src="${thumb}" style="width:80px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;" />`
+            : `<span style="font-size:1.5rem;flex-shrink:0;">🔗</span>`}
+          <div style="flex:1;min-width:0;">
+            <input class="resource-inline-input" value="${l.title}" placeholder="Title"
+              oninput="updateLink(${i},'title',this.value)" />
+            <div style="font-size:0.76rem;margin-top:0.15rem;">
+              <a href="${l.url}" target="_blank" rel="noopener" class="resource-link"
+                style="font-size:0.76rem;color:var(--text-muted);">${l.url}</a>
+            </div>
+          </div>
+          <button class="btn btn-reject btn-sm" onclick="removeLink(${i})">✕</button>
+        </div>
+        <input class="resource-inline-input" value="${l.desc || ''}" placeholder="Description (optional)"
+          oninput="updateLink(${i},'desc',this.value)" style="font-size:0.85rem;" />
+      </div>`;
+  }).join('');
+}
+
+function updateLink(i, field, val) {
+  resourceLinks[i][field] = val;
+  localStorage.setItem('sn_links', JSON.stringify(resourceLinks));
+}
+
+// load resources when tab opens — add to showTab:
+// if (tab === 'resources') { renderLinks(); renderUploadedFiles(); }
+
+
+function toggleAuthTheme() {
+  const current = localStorage.getItem('sn_theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('sn_theme', next);
+  applyTheme();
+  updateAuthThemeBtn();
+}
+
+function updateAuthThemeBtn() {
+  const theme = localStorage.getItem('sn_theme') || 'light';
+  const btn = document.getElementById('auth-theme-toggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
+
+
+// ── Goals Calendar ────────────────────────────
+async function loadCalendar() {
+  const data = await api('GET', '/goals');
+  const container = document.getElementById('goals-calendar');
+  if (!container || !data.goals?.length) {
+    if (container) container.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div>No goals to show</div>';
+    return;
+  }
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // Build month map
+  const months = {};
+  data.goals.forEach(g => {
+    if (!g.target_date) return;
+    const d = new Date(g.target_date + 'T00:00:00');
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    if (!months[key]) months[key] = { year: d.getFullYear(), month: d.getMonth(), goals: [] };
+    months[key].goals.push(g);
+  });
+
+  // Sort months chronologically
+  const sortedMonths = Object.values(months).sort((a,b) =>
+    new Date(a.year, a.month) - new Date(b.year, b.month));
+
+  const monthNames = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  const dayNames   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  container.innerHTML = sortedMonths.map(({ year, month, goals }) => {
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Map date → goals
+    const goalMap = {};
+    goals.forEach(g => {
+      const d = new Date(g.target_date + 'T00:00:00').getDate();
+      if (!goalMap[d]) goalMap[d] = [];
+      goalMap[d].push(g);
+    });
+
+    // Build grid cells
+    let cells = '';
+    // empty leading cells
+    for (let i = 0; i < firstDay; i++) cells += `<div class="cal-cell cal-empty"></div>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cellDate = new Date(year, month, d);
+      cellDate.setHours(0,0,0,0);
+      const diff = Math.round((cellDate - today) / 86400000);
+      const isToday   = diff === 0;
+      const isPast    = diff < 0;
+      const isFuture  = diff > 0;
+      const hasGoal   = !!goalMap[d];
+
+      let cellClass = 'cal-cell';
+      if (isToday)  cellClass += ' cal-today';
+      else if (isPast)   cellClass += ' cal-past';
+      else if (isFuture) cellClass += ' cal-future';
+      if (hasGoal)  cellClass += ' cal-has-goal';
+
+      const goalDots = hasGoal ? goalMap[d].map(g => {
+        const gDate = new Date(g.target_date + 'T00:00:00');
+        gDate.setHours(0,0,0,0);
+        const gDiff = Math.round((gDate - today) / 86400000);
+        const status = gDiff === 0 ? 'today' : gDiff < 0 ? 'past' : 'future';
+        const daysSince = gDiff < 0 ? `${Math.abs(gDiff)}d ago` : gDiff === 0 ? 'today' : `in ${gDiff}d`;
+        return `<div class="cal-goal-pill cal-goal-${status}" title="${g.title} · ${daysSince}">
+          ${g.completed ? '✅' : ''} ${g.title}
+        </div>`;
+      }).join('') : '';
+
+      cells += `
+        <div class="${cellClass}">
+          <span class="cal-day-num">${d}</span>
+          ${goalDots}
+        </div>`;
+    }
+
+    return `
+      <div class="cal-month">
+        <div class="cal-month-title">${monthNames[month]} ${year}</div>
+        <div class="cal-grid">
+          ${dayNames.map(n => `<div class="cal-header-cell">${n}</div>`).join('')}
+          ${cells}
+        </div>
+      </div>`;
+  }).join('');
 }

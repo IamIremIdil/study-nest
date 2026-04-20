@@ -464,8 +464,8 @@ textarea { resize: vertical; min-height: 80px; }
 .goal-desc { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
 
 .countdown-badge {
-  background: rgba(237, 244, 245, 0.8);
-  color: rgba(122, 187, 201);
+  background: rgba(244, 252, 255, 0.8);
+  color: rgb(80, 96, 109);
   border: 1px solid var(--sage-light);
   border-radius: 20px;
   padding: 0.25rem 0.75rem;
@@ -1040,3 +1040,238 @@ body {
 .theme-btn:hover:not(.active) {
   color: var(--text);
 }
+
+/* ── Resources ── */
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  background: var(--cream);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.upload-area:hover {
+  border-color: var(--rose);
+  background: var(--blush);
+}
+
+.upload-icon { font-size: 2rem; }
+
+.link-form-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.2s ease;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 0.6rem;
+  transition: all 0.2s;
+}
+
+.resource-item:hover {
+  border-color: var(--sage-light);
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.resource-link {
+  color: var(--rose-deep);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.92rem;
+}
+
+.resource-link:hover { text-decoration: underline; }
+
+
+
+
+
+/* ── Dark mode auth card ── */
+[data-theme="dark"] .auth-card {
+  background: rgba(33, 28, 23, 0.92);
+}
+
+[data-theme="dark"] .tab-row {
+  background: var(--cream);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: var(--cream);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] .tab-btn {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .tab-btn.active {
+  background: var(--warm-white);
+  color: var(--rose-deep);
+}
+
+/* ── Auth theme toggle ── */
+.auth-theme-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.auth-theme-pill {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-theme-pill:hover {
+  background: var(--blush);
+  border-color: var(--rose);
+}
+
+/* ── Resource inline inputs ── */
+.resource-inline-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--warm-white);
+  font-family: 'Lora', serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  margin-bottom: 0;
+  transition: border-color 0.2s;
+}
+
+.resource-inline-input:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 2px rgba(201,137,122,0.12);
+}
+
+
+/* ── Goals Calendar ── */
+.cal-month {
+  margin-bottom: 2rem;
+}
+
+.cal-month-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--rose-deep);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-header-cell {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  padding: 0.3rem 0;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.cal-cell {
+  min-height: 52px;
+  border-radius: 8px;
+  padding: 0.3rem;
+  background: var(--cream);
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  overflow: hidden;
+}
+
+.cal-cell:hover { border-color: var(--border); }
+.cal-empty { background: transparent; border: none; }
+
+.cal-day-num {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+/* Today — green tint */
+.cal-today {
+  background: rgba(46, 125, 50, 0.1);
+  border-color: rgba(46, 125, 50, 0.3) !important;
+}
+.cal-today .cal-day-num {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+/* Past — grey tint */
+.cal-past {
+  background: rgba(150, 150, 150, 0.07);
+}
+.cal-past .cal-day-num { color: var(--text-muted); }
+
+/* Future — blue tint */
+.cal-future.cal-has-goal {
+  background: rgba(30, 100, 200, 0.07);
+  border-color: rgba(30, 100, 200, 0.2) !important;
+}
+
+/* Goal pills inside cells */
+.cal-goal-pill {
+  font-size: 0.68rem;
+  border-radius: 4px;
+  padding: 0.1rem 0.3rem;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Lora', serif;
+  cursor: default;
+}
+
+.cal-goal-today {
+  background: rgba(46, 125, 50, 0.2);
+  color: #2e7d32;
+}
+
+.cal-goal-past {
+  background: rgba(150, 150, 150, 0.18);
+  color: var(--text-muted);
+}
+
+.cal-goal-future {
+  background: rgba(30, 100, 200, 0.12);
+  color: #1a5cc8;
+}
+
+[data-theme="dark"] .cal-goal-future { color: #7aadff; }
+[data-theme="dark"] .cal-goal-today  { color: #66bb6a; }
