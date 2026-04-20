@@ -86,6 +86,7 @@ function showApp() {
   loadDashboard();
   loadPartners();
   loadFriendRequests();
+  applyBg();
 }
 
 // ── Navigation ────────────────────────────────
@@ -583,4 +584,53 @@ async function respondToRequest(id, action) {
   toast(action === 'accept' ? '🌸 Friend added!' : '👋 Request declined.');
   loadFriendRequests();
   loadPartners(); // refresh the "Send to" dropdown in Notes
+}
+
+
+// ── Background Picker ─────────────────────────
+const BG_OPTIONS = {
+  video:  { type: 'video' },
+  forest: { type: 'static', url: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80' },
+  cream:  { type: 'static', url: '' },
+  dark:   { type: 'static', url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80' },
+};
+
+function setBg(key) {
+  localStorage.setItem('sn_bg', key);
+  applyBg();
+  highlightActiveBg();
+  toast('🌿 Background updated!');
+}
+
+function applyBg() {
+  const key = localStorage.getItem('sn_bg') || 'video';
+  const opt = BG_OPTIONS[key];
+  const video   = document.querySelector('.video-background');
+  const overlay = document.querySelector('.video-overlay');
+
+  if (opt.type === 'video') {
+    if (video)   { video.style.display = ''; }
+    if (overlay) { overlay.style.display = ''; }
+    document.body.style.backgroundImage = '';
+  } else {
+    if (video)   { video.style.display = 'none'; }
+    if (overlay) { overlay.style.display = 'none'; }
+    if (opt.url) {
+      document.body.style.backgroundImage =
+        `linear-gradient(rgba(250,246,240,0.6),rgba(250,246,240,0.75)), url('${opt.url}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundAttachment = 'fixed';
+    } else {
+      document.body.style.backgroundImage = 'none';
+    }
+  }
+
+  highlightActiveBg();
+}
+
+function highlightActiveBg() {
+  const key = localStorage.getItem('sn_bg') || 'video';
+  document.querySelectorAll('.bg-option').forEach(btn => btn.classList.remove('active'));
+  const active = document.getElementById('bg-' + key);
+  if (active) active.classList.add('active');
 }
