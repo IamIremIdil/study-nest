@@ -604,7 +604,7 @@ const BG_OPTIONS = {
   video:  { type: 'video' },
   forest: { type: 'static', url: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80' },
   cream:  { type: 'static', url: 'https://images.unsplash.com/photo-1587317996312-6314ec7b5a06?w=1600&q=80' },
-  dark:   { type: 'static', url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80' },
+  library:   { type: 'static', url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80' },
 };
 
 function setBg(key) {
