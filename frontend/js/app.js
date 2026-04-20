@@ -83,10 +83,22 @@ function showApp() {
   if (currentUser.role === 'supporter') {
     document.getElementById('welcome-sub').textContent = 'Keep sending those sweet notes 🌸';
   }
+
+  {
+  // ... existing ...
+  if (!localStorage.getItem('sn_bg')) {
+    const isMobile = window.innerWidth <= 768;
+    localStorage.setItem('sn_bg', isMobile ? 'forest' : 'video');
+  }
+  applyTheme();
+  applyBg();
+  }
+
   loadDashboard();
   loadPartners();
   loadFriendRequests();
   applyBg();
+  applyTheme();
 }
 
 // ── Navigation ────────────────────────────────
@@ -591,8 +603,8 @@ async function respondToRequest(id, action) {
 const BG_OPTIONS = {
   video:  { type: 'video' },
   forest: { type: 'static', url: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1600&q=80' },
-  cream:  { type: 'static', url: '' },
-  dark:   { type: 'static', url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80' },
+  cream:  { type: 'static', url: 'https://images.unsplash.com/photo-1587317996312-6314ec7b5a06?w=1600&q=80' },
+  dark:   { type: 'static', url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80' },
 };
 
 function setBg(key) {
@@ -604,10 +616,17 @@ function setBg(key) {
 
 function applyBg() {
   const key = localStorage.getItem('sn_bg') || 'video';
-  const opt = BG_OPTIONS[key];
+  const theme = localStorage.getItem('sn_theme') || 'light';
+  const opt   = BG_OPTIONS[key] || BG_OPTIONS[defaultBg]; // ← fallback if key is stale
   const video   = document.querySelector('.video-background');
   const overlay = document.querySelector('.video-overlay');
 
+  // overlay strength: dark mode gets a darker tint, light gets a lighter one
+  const lightOverlay = 'linear-gradient(rgba(250,246,240,0.35), rgba(250,246,240,0.45))';
+  const darkOverlay  = 'linear-gradient(rgba(10,8,6,0.55), rgba(10,8,6,0.65))';
+  const overlayGrad  = theme === 'dark' ? darkOverlay : lightOverlay;
+
+  
   if (opt.type === 'video') {
     if (video)   { video.style.display = ''; }
     if (overlay) { overlay.style.display = ''; }
@@ -624,7 +643,6 @@ function applyBg() {
       document.body.style.backgroundImage = 'none';
     }
   }
-
   highlightActiveBg();
 }
 
@@ -633,4 +651,20 @@ function highlightActiveBg() {
   document.querySelectorAll('.bg-option').forEach(btn => btn.classList.remove('active'));
   const active = document.getElementById('bg-' + key);
   if (active) active.classList.add('active');
+}
+
+
+// ── Theme ─────────────────────────────────────
+function setTheme(theme) {
+  localStorage.setItem('sn_theme', theme);
+  applyTheme();
+  applyBg()
+  toast(theme === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+}
+
+function applyTheme() {
+  const theme = localStorage.getItem('sn_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-light')?.classList.toggle('active', theme === 'light');
+  document.getElementById('theme-dark')?.classList.toggle('active',  theme === 'dark');
 }

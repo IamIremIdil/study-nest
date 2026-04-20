@@ -290,6 +290,15 @@
     <div class="card-title">⚙️ Settings</div>
     <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Manage your account and preferences.</p>
 
+<div class="theme-toggle-row">
+  <span>Theme</span>
+  <div class="theme-toggle">
+    <button class="theme-btn" id="theme-light" onclick="setTheme('light')">☀️ Light</button>
+    <button class="theme-btn" id="theme-dark"  onclick="setTheme('dark')">🌙 Dark</button>
+  </div>
+</div>
+
+
     <div class="settings-group">
       <div class="settings-label">Account</div>
       <button class="btn btn-outline settings-btn" disabled>🌴 Vacation Mode <span class="soon-badge">soon</span></button>
@@ -306,7 +315,7 @@
   <div class="bg-picker-grid">
     <button class="bg-option" onclick="setBg('video')" id="bg-video">
       <div class="bg-preview bg-preview-video">▶</div>
-      <span>cozy room</span>
+      <span>cozy forest</span>
       <small>animated</small>
   </button>
     <button class="bg-option" onclick="setBg('forest')" id="bg-forest">
@@ -316,12 +325,12 @@
     </button>
     <button class="bg-option" onclick="setBg('cream')" id="bg-cream">
       <div class="bg-preview bg-preview-cream"></div>
-      <span>minimal</span>
+      <span>cream</span>
       <small>static</small>
     </button>
     <button class="bg-option" onclick="setBg('dark')" id="bg-dark">
       <div class="bg-preview bg-preview-dark"></div>
-      <span>night</span>
+      <span>dark</span>
       <small>static</small>
     </button>
   </div>
