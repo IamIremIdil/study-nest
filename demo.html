@@ -3,45 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyNest 🌿 — Demo</title>
+  <title>StudyNest 🌿</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
-  <style>
-    /* ── Demo banner ── */
-    .demo-banner {
-      position: fixed;
-      bottom: 1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(33, 28, 23, 0.88);
-      backdrop-filter: blur(8px);
-      color: #e8ddd5;
-      border: 1px solid rgba(201,137,122,0.3);
-      border-radius: 14px;
-      padding: 0.6rem 1.25rem;
-      font-family: 'Lora', serif;
-      font-size: 0.82rem;
-      z-index: 9000;
-      white-space: nowrap;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .demo-banner strong { color: #e8a898; }
-    .demo-banner button {
-      background: transparent;
-      border: none;
-      color: #8a7a70;
-      cursor: pointer;
-      font-size: 1rem;
-      line-height: 1;
-      padding: 0;
-    }
-    .demo-banner button:hover { color: #e8a898; }
-  </style>
 </head>
 <body>
+
+
+
+  <script>
+  // Override fetch to debug
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    console.log('FETCH CALLED:', args[0]);
+    if (args[0].includes('localhost') || args[0].includes('127.0.0.1')) {
+      alert('ERROR: App trying to call ' + args[0] + ' - this should not happen in demo mode!');
+    }
+    return originalFetch(...args);
+  };
+</script>
+
+
 
   <video class="video-background" autoplay muted loop playsinline poster="assets/images/fallback-bg.jpg">
     <source src="assets/videos/cozy-bg.mp4" type="video/mp4">
@@ -50,19 +32,13 @@
   </video>
   <div class="video-overlay"></div>
 
-  <!-- Demo hint -->
-  <div class="demo-banner" id="demo-banner">
-    🎭 <strong>Demo mode</strong> — try logging in as <strong>Sarah</strong>, <strong>Emma</strong>, or <strong>Alex</strong> (password: <strong>demo123</strong>)
-    <button onclick="document.getElementById('demo-banner').remove()" title="Dismiss">✕</button>
-  </div>
+
+
 
 <!-- ════════════════════ AUTH SCREEN ════════════════════ -->
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-theme-row">
-        <button class="auth-theme-pill" id="auth-theme-toggle" onclick="toggleAuthTheme()">🌙</button>
-      </div>
       <span class="leaf">🌿</span>
       <h1>StudyNest</h1>
       <p>your cozy corner for exam season</p>
@@ -78,7 +54,7 @@
     <!-- Login -->
     <div id="login-form">
       <label>Username</label>
-      <input type="text" id="login-user" placeholder="e.g. Sarah" autocomplete="username" />
+      <input type="text" id="login-user" placeholder="e.g. vet_bf" autocomplete="username" />
       <label>Password</label>
       <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
       <button class="btn btn-primary" onclick="handleLogin()">🌿 Sign In</button>
@@ -105,26 +81,27 @@
   <header class="app-header">
     <button class="header-logo" onclick="showTab('dashboard', null)">🌿 StudyNest</button>
     <nav class="nav-tabs">
-      <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
-      <button class="nav-tab" onclick="showTab('resources', this)">📓 Resources</button>
-      <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
-      <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
-      <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
-      <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
-      <button class="nav-tab nav-tab-disabled" title="Coming soon!">🏠 Live Study Room</button>
-    </nav>
+  <button class="nav-tab active" onclick="showTab('dashboard', this)">🏡 Home</button>
+  <button class="nav-tab" onclick="showTab('timer', this)">🍅 Timer</button>
+  <button class="nav-tab" onclick="showTab('goals', this)">🎯 Goals</button>
+  <button class="nav-tab" onclick="showTab('notes', this)">💌 Notes</button>
+  <button class="nav-tab" onclick="showTab('mood', this)">🌸 Mood</button>
+</nav>
 
-    <div style="display:flex;align-items:center;gap:0.75rem;">
-      <div class="user-menu" id="user-menu">
-        <div class="user-badge user-menu-trigger">🌿 <span id="header-username"></span> ▾</div>
-        <div class="user-dropdown">
-          <button class="dropdown-item" onclick="showTab('settings', null)">⚙️ Settings</button>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item dropdown-item-danger" onclick="logout()">🚪 Sign out</button>
-        </div>
-      </div>
+<div style="display:flex;align-items:center;gap:0.75rem;">
+  <div class="user-menu" id="user-menu">
+    <div class="user-badge user-menu-trigger">🌿 <span id="header-username"></span> ▾</div>
+    <div class="user-dropdown">
+      <button class="dropdown-item" onclick="showTab('settings', event)">⚙️ Settings</button>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item dropdown-item-danger" onclick="logout()">🚪 Sign out</button>
     </div>
-  </header>
+  </div>
+</div>
+  
+
+
+</header>
 
   <main class="main-content">
 
@@ -132,7 +109,7 @@
     <div id="tab-dashboard">
       <div class="welcome-banner">
         <h2>Good to see you, <span id="welcome-name"></span> 🌿</h2>
-        <p id="welcome-sub">You got this — one step at a time.</p>
+        <p id="welcome-sub">You got this - one step at a time. </p>
         <img src="assets/images/avatar.png" alt="" class="welcome-avatar">
       </div>
       <div class="dashboard-grid">
@@ -164,49 +141,6 @@
       <div class="card" id="next-goal-card" style="display:none">
         <div class="card-title">🎯 Coming up</div>
         <div id="next-goal-content"></div>
-      </div>
-    </div>
-
-    <!-- RESOURCES -->
-    <div id="tab-resources" class="hidden">
-      <div class="card">
-        <div class="card-title">📓 Resources</div>
-        <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Save links and files for your study sessions.</p>
-
-        <div class="settings-group">
-          <div class="settings-label" style="font-size:1rem;color:var(--text);text-transform:none;letter-spacing:0;font-family:'Playfair Display',serif;">📁 Upload from Computer</div>
-          <label class="upload-area" for="resource-upload">
-            <span class="upload-icon">📂</span>
-            <span>Click to upload a file</span>
-            <small style="color:var(--text-muted);font-style:italic;">PDF, images, notes…</small>
-            <input type="file" id="resource-upload" multiple style="display:none;" onchange="handleFileUpload(this)" />
-          </label>
-          <div id="uploaded-files-list"></div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="settings-group">
-          <div class="section-header">
-            <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--text);">🔗 Links</div>
-            <button class="btn btn-sage btn-sm" onclick="showAddLinkForm()">+ Add Link</button>
-          </div>
-          <div id="add-link-form" class="hidden">
-            <div class="link-form-card">
-              <label>Title</label>
-              <input type="text" id="link-title" placeholder="e.g. Khan Academy – Organic Chemistry" />
-              <label>URL</label>
-              <input type="url" id="link-url" placeholder="https://..." />
-              <label>Description (optional)</label>
-              <input type="text" id="link-desc" placeholder="e.g. Great for mechanism review" />
-              <div style="display:flex;gap:0.75rem;margin-top:0.25rem;">
-                <button class="btn btn-sage" style="flex:1" onclick="acceptLink()">✓ Add</button>
-                <button class="btn btn-ghost" style="flex:1" onclick="cancelLink()">✕ Cancel</button>
-              </div>
-            </div>
-          </div>
-          <div id="links-list" style="margin-top:1rem;"></div>
-        </div>
       </div>
     </div>
 
@@ -266,13 +200,6 @@
         <div id="goals-list">
           <div class="empty-state"><div class="empty-icon">🌱</div>Add your first goal above!</div>
         </div>
-
-        <div class="card" style="margin-top:1.25rem;">
-          <div class="card-title">📅 Goals Calendar</div>
-          <div id="goals-calendar">
-            <div class="empty-state"><div class="empty-icon">📅</div>No goals to show</div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -280,7 +207,7 @@
     <div id="tab-notes" class="hidden">
       <div class="card">
         <div class="card-title">💌 Send a Love Note</div>
-        <div class="partner-select-note" id="note-tip">Loading…</div>
+        <div class="partner-select-note" id="note-tip">Loading users…</div>
         <label>Send to</label>
         <select id="note-to"></select>
         <label>Your message</label>
@@ -295,30 +222,6 @@
         </div>
         <button class="btn btn-primary" onclick="sendNote()" id="send-note-btn">💌 Send Note</button>
       </div>
-
-      <!-- FRIENDS -->
-      <div class="card">
-        <div class="card-title">👥 Friends</div>
-        <label>Add by username</label>
-        <div class="friend-add-row">
-          <input type="text" id="friend-username" placeholder="e.g. Alex" style="margin-bottom:0;" />
-          <button class="btn btn-sage" onclick="sendFriendRequest()">🌸 Add</button>
-        </div>
-        <div id="friend-requests-section" class="hidden" style="margin-top:1rem;">
-          <div class="section-header">
-            <div class="section-title">💌 Pending Requests</div>
-            <button class="btn btn-ghost btn-sm" onclick="loadFriendRequests()">↻ Refresh</button>
-          </div>
-          <div id="friend-requests-list"></div>
-        </div>
-        <div id="friends-list-section" style="margin-top:1rem;">
-          <div class="section-title" style="margin-bottom:0.75rem;">Your Friends</div>
-          <div id="friends-list">
-            <div class="empty-state"><div class="empty-icon">🌿</div>No friends yet — add some!</div>
-          </div>
-        </div>
-      </div>
-
       <div class="card">
         <div class="card-title">📬 Your Inbox</div>
         <div id="inbox-list">
@@ -359,67 +262,29 @@
       </div>
     </div>
 
+
     <!-- SETTINGS -->
-    <div id="tab-settings" class="hidden">
-      <div class="card">
-        <div class="card-title">⚙️ Settings</div>
-        <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Manage your account and preferences.</p>
+<div id="tab-settings" class="hidden">
+  <div class="card">
+    <div class="card-title">⚙️ Settings</div>
+    <p style="color:var(--text-muted);font-style:italic;margin-bottom:1.5rem;">Manage your account and preferences.</p>
 
-        <div class="theme-toggle-row">
-          <span>Theme</span>
-          <div class="theme-toggle">
-            <button class="theme-btn" id="theme-light" onclick="setTheme('light')">☀️ Light</button>
-            <button class="theme-btn" id="theme-dark"  onclick="setTheme('dark')">🌙 Dark</button>
-          </div>
-        </div>
-
-        <div class="settings-group">
-          <div class="settings-label" style="font-size:1rem;color:var(--text);text-transform:none;letter-spacing:0;font-family:'Playfair Display',serif;margin-bottom:0.25rem;">Choose Background</div>
-          <p style="color:var(--text-muted);font-style:italic;font-size:0.85rem;margin-bottom:1rem;">Pick a vibe for your study space.</p>
-          <div class="bg-picker-grid">
-            <button class="bg-option" onclick="setBg('video')" id="bg-video">
-              <div class="bg-preview bg-preview-video">▶</div>
-              <span>cozy forest</span>
-              <small>animated</small>
-            </button>
-            <button class="bg-option" onclick="setBg('forest')" id="bg-forest">
-              <div class="bg-preview bg-preview-forest"></div>
-              <span>forest</span>
-              <small>static</small>
-            </button>
-            <button class="bg-option" onclick="setBg('cream')" id="bg-cream">
-              <div class="bg-preview bg-preview-cream"></div>
-              <span>cream</span>
-              <small>static</small>
-            </button>
-            <button class="bg-option" onclick="setBg('library')" id="bg-library">
-              <div class="bg-preview bg-preview-library"></div>
-              <span>library</span>
-              <small>static</small>
-            </button>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="settings-group">
-          <div class="settings-label">Account</div>
-          <button class="btn btn-outline settings-btn" disabled>🌴 Vacation Mode <span class="soon-badge">soon</span></button>
-          <button class="btn btn-outline settings-btn" disabled>🔑 Reset Password <span class="soon-badge">soon</span></button>
-          <button class="btn btn-outline settings-btn" disabled>🌐 Change Language <span class="soon-badge">soon</span></button>
-          <button class="btn btn-outline settings-btn" disabled>🐙 Link GitHub Account <span class="soon-badge">soon</span></button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="settings-group">
-          <div class="settings-label">Danger Zone</div>
-          <button class="btn settings-btn" style="background:#fdeaea;color:#c0392b;border:1.5px solid #f5c6c6;" disabled>
-            🗑️ Delete Account <span class="soon-badge" style="background:#fdeaea;color:#c0392b;border-color:#f5c6c6;">soon</span>
-          </button>
-        </div>
-      </div>
+    <div class="settings-group">
+      <div class="settings-label">Account</div>
+      <button class="btn btn-outline settings-btn" disabled>🌴 Vacation Mode <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🔑 Reset Password <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🌐 Change Language <span class="soon-badge">soon</span></button>
+      <button class="btn btn-outline settings-btn" disabled>🐙 Link GitHub Account <span class="soon-badge">soon</span></button>
     </div>
+
+    <div class="divider"></div>
+
+    <div class="settings-group">
+      <div class="settings-label">Danger Zone</div>
+      <button class="btn settings-btn" style="background:#fdeaea;color:#c0392b;border:1.5px solid #f5c6c6;" disabled>🗑️ Delete Account <span class="soon-badge" style="background:#fdeaea;color:#c0392b;border-color:#f5c6c6;">soon</span></button>
+    </div>
+  </div>
+</div>
 
   </main>
 </div>
