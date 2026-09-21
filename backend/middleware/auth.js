@@ -2,7 +2,11 @@
 // middleware/auth.js — Protects routes by verifying JWT tokens
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'studynest-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not set in environment variables!');
+} // prevent silent failures if the secret is missing
 
 function authenticate(req, res, next) {
   // Token comes in the Authorization header as "Bearer <token>"
