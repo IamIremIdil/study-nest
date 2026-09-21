@@ -19,7 +19,7 @@ Demo accounts:
 <img width="1918" height="912" alt="Image" src="https://github.com/user-attachments/assets/e6ce2a3f-d375-4938-b500-45b03122840e" />
 
 
-## Quick Start ‧₊˚❀༉‧₊˚.
+## Quick Start:
 
 ### 1. Set up the backend
 
@@ -39,14 +39,14 @@ You should see:
 
 ### 2. Open the frontend
 
-Just open `frontend/index.html` in your browser , no build step needed 🌸
+Just open `frontend/index.html` in your browser , no build step needed.
 
 ### 3. Pick a role
 
 - role: Supporter 🌸
 - role: Student 📚
 
-Then you can send each other love notes! 💌
+Then you can send each other love notes.
 
 ---
 
