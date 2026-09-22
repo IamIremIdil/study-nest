@@ -102,7 +102,10 @@ function createTables() {
       from_user_id INTEGER NOT NULL,
       to_user_id INTEGER NOT NULL,
       request_status TEXT NOT NULL DEFAULT 'pending',
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(from_user_id, to_user_id),
+      FOREIGN KEY (from_user_id) REFERENCES users(id),
+      FOREIGN KEY (to_user_id) REFERENCES users(id)
       )
     `);
 
