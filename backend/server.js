@@ -17,8 +17,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-initDB();
-
 app.use('/api/auth',    authRoutes);
 app.use('/api/notes',   notesRoutes);
 app.use('/api/timer',   timerRoutes);
@@ -35,6 +33,9 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+(async () => {
+  await initDB();
 app.listen(PORT, () => {
   console.log(`🌸 StudyNest running at http://localhost:${PORT}`);
 });
+})();
