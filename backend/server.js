@@ -6,6 +6,10 @@ const { initDB } = require('./db');
 const helmet = require('helmet');
 app.use(helmet()); // Add security headers to all responses
 
+const rateLimit = require('express-rate-limit');
+// Apply rate limiting to all requests
+app.use('/api/auth', rateLimit({windowMs: 15 * 60 * 1000, max: 20, message: 'Too many requests from this IP, please try again later.'}));
+
 const authRoutes    = require('./routes/auth');
 const notesRoutes   = require('./routes/notes');
 const timerRoutes   = require('./routes/timer');
