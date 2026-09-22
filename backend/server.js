@@ -3,6 +3,9 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 const { initDB } = require('./db');
+const helmet = require('helmet');
+app.use(helmet()); // Add security headers to all responses
+
 const authRoutes    = require('./routes/auth');
 const notesRoutes   = require('./routes/notes');
 const timerRoutes   = require('./routes/timer');
