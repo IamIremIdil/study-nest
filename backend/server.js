@@ -13,9 +13,6 @@ const friendsRoutes = require('./routes/friends');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const helmet = require('helmet');
-app.use(helmet()); // Add security headers to all responses
-
 const rateLimit = require('express-rate-limit');
 // Apply rate limiting to all requests
 
