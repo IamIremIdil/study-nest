@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
     [username, password_hash, validRole]
   );
 
-  const token = jwt.sign({ id: userId, username: user.username, role: validRole }, JWT_SECRET, { expiresIn: '7d' });
+  const token = jwt.sign({ id: userId, username, role: validRole }, JWT_SECRET, { expiresIn: '7d' });
 
   res.status(201).json({
     message: '🌸 Welcome to StudyNest!',
